@@ -1,0 +1,65 @@
+# ==============================
+# Node modules
+# ==============================
+node_modules/
+
+# ==============================
+# Expo / React Native
+# ==============================
+.expo/
+.expo-shared/
+dist/
+web-build/
+
+# Expo Router cache
+.expo-router/
+
+# Metro bundler cache
+.metro-cache/
+
+# ==============================
+# Build folders (native)
+# ==============================
+android/
+ios/
+
+# If you are using EAS Build, DO NOT ignore android/ios after prebuild
+# (remove above lines if you ran: npx expo prebuild)
+
+# ==============================
+# Logs
+# ==============================
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+expo-debug.log*
+
+# ==============================
+# Environment files
+# ==============================
+.env
+.env.local
+.env.*.local
+
+# ==============================
+# OS files
+# ==============================
+.DS_Store
+Thumbs.db
+
+# ==============================
+# IDE / Editor
+# ==============================
+.vscode/
+.idea/
+
+# ==============================
+# TypeScript
+# ==============================
+*.tsbuildinfo
+
+# ==============================
+# Misc
+# ==============================
+*.log
+coverage/
