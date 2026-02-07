@@ -50,6 +50,9 @@ if ls.nrApp!=nil{
 	ls.nrApp.Shutdown(10*time.Second)
 }
 }
+func (ls *LoggerService) GetApplication() *newrelic.Application{
+	return ls.nrApp
+}
 func NewLoggerWithService(cfg *config.ObservabiltiyConfig,loggerService *LoggerService) zerolog.Logger{
 	var logLevel zerolog.Level
 	level:=cfg.GetLogLevel()
