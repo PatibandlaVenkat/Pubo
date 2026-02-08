@@ -16,7 +16,7 @@ import (
 ) 
 var migrations embed.FS
 
-func Migrate(ctx context.Context,logger *zerolog.Logger,cfg *config.Config) error{
+func Migrate(ctx context.Context,logger *zerolog.Logger,cfg *config.Config) error{ 
 	hostPort:=net.JoinHostPort(cfg.Database.Host,strconv.Itoa(cfg.Database.Port))
 
 	encodedPassword:=url.QueryEscape(cfg.Database.Password)
