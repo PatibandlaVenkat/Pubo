@@ -22,7 +22,7 @@ import (
 type Server struct{
 	Config *config.Config
 	Logger  *zerolog.Logger
-	LoggerService loggerPkg.LoggerService
+	LoggerService *loggerPkg.LoggerService
 	DB *database.Database
 	Redis *redis.Client
 	httpServer *http.Server
