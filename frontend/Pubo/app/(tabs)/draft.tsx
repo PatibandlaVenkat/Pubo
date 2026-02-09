@@ -10,8 +10,6 @@ const draft = () => {
       style={{
         backgroundColor: '#0E2A47',
         flex: 1,
-        justifyContent: "center",
-        alignItems: "center",
       }}
     >
     <View>

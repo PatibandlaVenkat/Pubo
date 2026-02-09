@@ -11,6 +11,7 @@ export interface ColorScheme{
   backGround: string;
   textMuted: string;
   success: string;
+  sidebar: string;
 }
 
 const lightColors: ColorScheme ={
@@ -23,6 +24,7 @@ const lightColors: ColorScheme ={
   backGround: '#ffffff',
   textMuted: '#94A3B8',
   success: '#10b981',
+  sidebar: '#94A3B8'
 }
 
 const darkColors: ColorScheme ={
@@ -35,6 +37,7 @@ const darkColors: ColorScheme ={
   backGround: '#0E2A47',
   textMuted: '#64748B',
   success: '#34d399',
+  sidebar: '#12375e'
 }
 
 interface ThemeContextType{

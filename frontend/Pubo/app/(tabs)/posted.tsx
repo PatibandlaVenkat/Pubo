@@ -9,8 +9,6 @@ const posted = () => {
       style={{
         backgroundColor: colors.backGround,
         flex: 1,
-        justifyContent: "center",
-        alignItems: "center",
       }}
     >
     <View>
