@@ -1,10 +1,15 @@
 package middleware
 
 import (
+	"errors"
+	"net/http"
+
 	"github.com/PatibandlaVenkat/Pubo/internal/errs"
 	"github.com/PatibandlaVenkat/Pubo/internal/server"
+	"github.com/PatibandlaVenkat/Pubo/internal/sqlerr"
 	"github.com/labstack/echo/v4"
 	"github.com/labstack/echo/v4/middleware"
+	"github.com/rs/zerolog"
 )
 type GlobalMiddleWares struct{
 	server *server.Server
@@ -34,14 +39,94 @@ statusCode:=v.Status
 if v.Error!=nil{
 	var httpErr *errs.HTTPError
 	var echoErr *echo.HTTPError
-	if errors.As(v.Error,&echoErr){
+	if errors.As(v.Error,&httpErr){
+		statusCode=httpErr.Status
+	}else if errors.As(v.Error,&echoErr){
 		statusCode=echoErr.Code
 	}
 }
 logger:=GetLogger(c)
-var e*
+var e*zerolog.Event
+switch{
+case statusCode>=500:
+	e=logger.Error().Err(v.Error)
+case statusCode>=400:
+	e=logger.Warn()
+default:
+	e=logger.Info()
+}
+if requestID:=GetRequestID(c); requestID!=""{
+	e=e.Str("request_id",requestID)
+}
+if userID:=GetUserID(c); userID!=""{
+	e=e.Str("user_id",userID)
+}
+e.Dur("latency",v.Latency).Int("status",statusCode).Str("method",v.Method).Str("uri",v.URI).Str("host",v.Host).Str("ip",c.RealIP()).Str("user_agent",c.Request().UserAgent()).Msg("API")
+return nil
 		},
 
 		
 	})
+}
+func(global *GlobalMiddleWares) Recover() echo.MiddlewareFunc{
+	return middleware.Recover()
+}
+func(global *GlobalMiddleWares) Secure() echo.MiddlewareFunc{
+	return middleware.Secure()
+}
+
+func(global *GlobalMiddleWares) GlobalErrorHanlder(err error,c echo.Context){
+	originalErr:=err
+	var httpErr *errs.HTTPError
+
+	if !errors.As(err,&httpErr){
+		var echoErr *echo.HTTPError
+		if errors.As(err,&echoErr){
+			if echoErr.Code==http.StatusNotFound{
+				err=errs.NewNotFoundError("route not found",false,nil)
+			}
+		}else{
+			err= sqlerr.HandleError(err)
+		}
+	}
+	var echoErr *echo.HTTPError
+	var status int
+	var code string
+	var message string
+	var fieldErrors[]errs.FieldError
+	var action *errs.Action
+	switch  {
+	case errors.As(err,&httpErr):
+		status=httpErr.Status
+		code=httpErr.Code
+		message=httpErr.Message
+		fieldErrors=httpErr.Errors
+		action=httpErr.Action
+	case errors.As(err,&echoErr):
+status=echoErr.Code
+code=errs.MakeUpperCaseWithUnderscores(http.StatusText(status))
+	if msg, ok := echoErr.Message.(string); ok {
+			message = msg
+		} else {
+			message = http.StatusText(echoErr.Code)
+		}	
+	default:
+		status = http.StatusInternalServerError
+		code = errs.MakeUpperCaseWithUnderscores(
+			http.StatusText(http.StatusInternalServerError))
+		message = http.StatusText(http.StatusInternalServerError)
+	}
+	logger:=*GetLogger(c)
+	logger.Error().Stack().Err(originalErr).Int("status",status).Str("error_code",code).Msg(message)
+
+	if !c.Response().Committed{
+		_=c.JSON(status,errs.HTTPError{
+			Code:code,
+			Message: message,
+			Status: status,
+			Override: httpErr!=nil && httpErr.Override,
+			Errors: fieldErrors,
+			Action: action,
+		})
+	}
 }

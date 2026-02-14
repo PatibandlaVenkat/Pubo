@@ -6,7 +6,7 @@ import (
 )
 
 type MiddleWares struct {
-	GLobal          *GlobalMiddleWares
+	Global          *GlobalMiddleWares
 	Auth            *AuthMiddleware
 	ContextEnhancer *ContextEnhancer
 	Tracing         *TracingMiddleware
@@ -19,8 +19,8 @@ func NewMiddlewares(s *server.Server) *MiddleWares{
 		nrApp=s.LoggerService.GetApplication()
 	}
 	return &MiddleWares{
-		Global:          NewGlobalMiddlewares(s),
-		Auth:            NewAuthMiddleware(s),
+		Global:          NewGlobalMiddleWares(s),
+		Auth:            NewAuthMiddleWare(s),
 		ContextEnhancer: NewContextEnhancer(s),
 		Tracing:         NewTracingMiddleware(s, nrApp),
 		RateLimit:       NewRateLimitMiddleware(s),
