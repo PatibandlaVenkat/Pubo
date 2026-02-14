@@ -3,6 +3,7 @@ package handler
 import (
 	"time"
 
+	"github.com/PatibandlaVenkat/Pubo/internal/middleware"
 	"github.com/PatibandlaVenkat/Pubo/internal/server"
 	"github.com/PatibandlaVenkat/Pubo/internal/validation"
 	"github.com/labstack/echo/v4"
@@ -97,5 +98,5 @@ func handleRequest[Req validation.Validatable](
 		txn.AddAttribute("handler.name",route)
 		responseHandler.AddAttributes(txn,nil)
 	}
-	loggerBuilder:=midd
+	loggerBuilder:=middleware.GetLogger(c).With().
 }
