@@ -1,6 +1,9 @@
 package handler
 
-import "github.com/PatibandlaVenkat/Pubo/internal/server"
+import (
+	"github.com/PatibandlaVenkat/Pubo/internal/server"
+	"github.com/PatibandlaVenkat/Pubo/internal/service"
+)
 
 type Handlers struct{
 	Health *HealthHandler
@@ -8,7 +11,7 @@ type Handlers struct{
 }
 func NewHandlers(s*server.Server,services *service.Services) *Handlers{
 	return &Handlers{
-		Health:NewHeatlhHandler(s),
-		OpenAPI:NewOpenAPIHandler(s),
+		Health:NewHealthHandler(s),
+		OpenAPI:NewOpenAPIHanlder(s),
 	}
 }

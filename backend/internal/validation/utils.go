@@ -20,11 +20,11 @@ type CustomValidationError struct{
 
 type CustomValidationErrors[] CustomValidationError
 
-func(c CustomValidationError) Error() string{
+func(c CustomValidationErrors) Error() string{
 return "validation failed"
 }
 
-func BindandValidate(c echo.Context,payload Validatable) error{
+func BindAndValidate(c echo.Context,payload Validatable) error{
 	if err:=c.Bind(payload); err!=nil{
 	message := strings.Split(strings.Split(err.Error(), ",")[1], "message=")[1]
 	return errs.NewBadRequestError(message,false,nil,nil,nil)
