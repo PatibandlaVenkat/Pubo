@@ -1,4 +1,5 @@
-import { View, Text, SafeAreaView } from 'react-native'
+import { View, Text,StyleSheet } from 'react-native'
+import { SafeAreaView } from 'react-native-safe-area-context';
 import React, { use } from 'react'
 import useTheme from "@/hooks/useTheme";
 
@@ -6,10 +7,7 @@ const posted = () => {
   const {colors,isDarkMode} = useTheme();
   return (
     <SafeAreaView
-      style={{
-        backgroundColor: colors.backGround,
-        flex: 1,
-      }}
+     style={styles.container}
     >
     <View>
       <Text style={{color:colors.text}}>posted</Text>
@@ -17,5 +15,11 @@ const posted = () => {
     </SafeAreaView>
   )
 }
+const styles=StyleSheet.create({
+  container:{
+    flex:1,
+    backgroundColor: '#0E2A47',
+  }
+})
 
 export default posted
