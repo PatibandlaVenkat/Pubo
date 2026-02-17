@@ -21,3 +21,4 @@ const styles=StyleSheet.create({
     backgroundColor: '#0E2A47',
   }
 })
+export default queued
