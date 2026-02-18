@@ -21,7 +21,7 @@ tasks:
   run:
     desc: run the cmd/pubo application
     cmds:
-    - go run ./cmd/pubot
+    - go run ./cmd/pubo/
 
   migrations:new:
     desc: create a new database migration

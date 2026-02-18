@@ -27,7 +27,7 @@ type ServerConfig struct{
 	ReadTimeout int `koanf:"read_timeout" validate:"required"`
 	WriteTimeout int `koanf:"write_timeout" validate:"required"`
 	IdleTimeout int `koanf:"idle_timeout" validate:"required"`
-	CORSAllowedOrigins []string `koanf:"cors_allowed_origin" validate:"required"`
+	CORSAllowedOrigins []string `koanf:"cors_allowed_origins" validate:"required"`
 }
 type DatabaseConfig struct{
 	Host string `koanf:"host" validate:"required"`
