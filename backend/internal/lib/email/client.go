@@ -35,7 +35,7 @@ func (c *Client) SendEmail(to,subject string,templateName Template,data map[stri
 		return errors.Wrapf(err,"failed to execute email template %s",templateName)
 	}
 	params:=&resend.SendEmailRequest{
-From:    fmt.Sprintf("%s <%s>", "Boilerplate", "onboarding@resend.dev"),
+From:    fmt.Sprintf("%s <%s>", "PUBO", "onboarding@resend.dev"),
 		To:      []string{to},
 		Subject: subject,
 		Html:    body.String(),
