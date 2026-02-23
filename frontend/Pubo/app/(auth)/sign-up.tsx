@@ -1,110 +1,94 @@
-import { ThemedText } from '@/components/themed-text'
-import { ThemedView } from '@/components/themed-view'
-import { useSignUp } from '@clerk/clerk-expo'
-import { Link, useRouter } from 'expo-router'
-import * as React from 'react'
-import { Pressable, StyleSheet, TextInput, View } from 'react-native'
+import { useSignUp } from "@clerk/clerk-expo";
+import{Link,useRouter} from "expo-router"
+import { StyleSheet,View,Text,Pressable, TextInput } from "react-native";
+import * as React from "react"
 
-export default function Page() {
-  const { isLoaded, signUp, setActive } = useSignUp()
-  const router = useRouter()
+export default function Page(){
+    const{isLoaded,signUp,setActive}=useSignUp()
+    const router=useRouter()
+    const[emailAddress,setEmailAddress]=React.useState('')
+    const[password,setPassword]=React.useState('')
+    const[pendingVerification,setPendingVerification]=React.useState(false)
+    const[code,setCode]=React.useState('')
 
-  const [emailAddress, setEmailAddress] = React.useState('')
-  const [password, setPassword] = React.useState('')
-  const [pendingVerification, setPendingVerification] = React.useState(false)
-  const [code, setCode] = React.useState('')
-
-  // Handle submission of sign-up form
-  const onSignUpPress = async () => {
-    if (!isLoaded) return
-
-    // Start sign-up process using email and password provided
-    try {
-      await signUp.create({
-        emailAddress,
-        password,
-      })
-
-      // Send user an email with verification code
-      await signUp.prepareEmailAddressVerification({ strategy: 'email_code' })
-
-      // Set 'pendingVerification' to true to display second form
-      // and capture code
-      setPendingVerification(true)
-    } catch (err) {
-      // See https://clerk.com/docs/guides/development/custom-flows/error-handling
-      // for more info on error handling
-      console.error(JSON.stringify(err, null, 2))
+    const onSignUpPress=async()=>{
+        if(!isLoaded){
+            return
+        }
+        try{
+            await signUp.create({
+                emailAddress,
+                password
+            })
+            await signUp.prepareEmailAddressVerification({
+                strategy:'email_code'
+            })
+            setPendingVerification(true)
+            //to set it as true and then show the second form
+        }
+        catch(err){
+            console.error(JSON.stringify(err,null,2))
+        }
     }
-  }
+    const onVerifyPress=async()=>{
+        if(!isLoaded){
+            return
+        }
+        try{
+            const signUpAttempt=await signUp.attemptEmailAddressVerification({
+                code,
+            })
 
-  // Handle submission of verification form
-  const onVerifyPress = async () => {
-    if (!isLoaded) return
-
-    try {
-      // Use the code the user provided to attempt verification
-      const signUpAttempt = await signUp.attemptEmailAddressVerification({
-        code,
-      })
-
-      // If verification was completed, set the session to active
-      // and redirect the user
-      if (signUpAttempt.status === 'complete') {
-        await setActive({
-          session: signUpAttempt.createdSessionId,
-          navigate: async ({ session }) => {
-            if (session?.currentTask) {
-              // Check for tasks and navigate to custom UI to help users resolve them
-              // See https://clerk.com/docs/guides/development/custom-flows/authentication/session-tasks
-              console.log(session?.currentTask)
-              return
+            if(signUpAttempt.status==='complete'){
+                await setActive({
+                    session:signUpAttempt.createdSessionId,
+                    navigate:async({session})=>{
+                        if(session?.currentTask){
+                            console.log(session?.currentTask)
+                            return
+                        }
+                        router.replace('/')
+                    },
+                })
             }
-
-            router.replace('/')
-          },
-        })
-      } else {
-        // If the status is not complete, check why. User may need to
-        // complete further steps.
-        console.error(JSON.stringify(signUpAttempt, null, 2))
-      }
-    } catch (err) {
-      // See https://clerk.com/docs/guides/development/custom-flows/error-handling
-      // for more info on error handling
-      console.error(JSON.stringify(err, null, 2))
+            else{
+                console.error(JSON.stringify(signUpAttempt,null,2))
+            }
+        }
+        catch(err){
+            console.error(JSON.stringify(err,null,2))
+        }
     }
-  }
+    if(pendingVerification){
+        return(
+            <View style={styles.container}>
+                <Text style={styles.title}>
+                    Verify your email
+                </Text>
+                <Text style={styles.description}>A verification code has been sent to your email</Text>
+                <TextInput
+                 style={styles.input}
+                    value={code}
+                    placeholder="Enter your verification code"
+                    placeholderTextColor="#666666"
+                    onChangeText={(code)=>setCode(code)}
+                    keyboardType="numeric"
+                   />
+                   <Pressable style={({pressed})=>[styles.button,pressed && styles.buttonPressed]} onPress={onVerifyPress}>
+                    <Text style={styles.buttonText}>Verify</Text>
+                   </Pressable>
 
-  if (pendingVerification) {
-    return (
-      <ThemedView style={styles.container}>
-        <ThemedText type="title" style={styles.title}>
-          Verify your email
-        </ThemedText>
-        <ThemedText style={styles.description}>A verification code has been sent to your email.</ThemedText>
-        <TextInput
-          style={styles.input}
-          value={code}
-          placeholder="Enter your verification code"
-          placeholderTextColor="#666666"
-          onChangeText={(code) => setCode(code)}
-          keyboardType="numeric"
-        />
-        <Pressable style={({ pressed }) => [styles.button, pressed && styles.buttonPressed]} onPress={onVerifyPress}>
-          <ThemedText style={styles.buttonText}>Verify</ThemedText>
-        </Pressable>
-      </ThemedView>
-    )
-  }
-
-  return (
-    <ThemedView style={styles.container}>
-      <ThemedText type="title" style={styles.title}>
-        Sign up
-      </ThemedText>
-      <ThemedText style={styles.label}>Email address</ThemedText>
-      <TextInput
+                
+            </View>
+        )
+    }
+    return(
+        <View style={styles.container}>
+            <Text style={styles.title}>
+                Sign up
+            </Text>
+            <Text style={styles.label}>Email address</Text>
+             <TextInput
         style={styles.input}
         autoCapitalize="none"
         value={emailAddress}
@@ -113,7 +97,7 @@ export default function Page() {
         onChangeText={(email) => setEmailAddress(email)}
         keyboardType="email-address"
       />
-      <ThemedText style={styles.label}>Password</ThemedText>
+       <Text style={styles.label}>Password</Text>
       <TextInput
         style={styles.input}
         value={password}
@@ -122,7 +106,7 @@ export default function Page() {
         secureTextEntry={true}
         onChangeText={(password) => setPassword(password)}
       />
-      <Pressable
+        <Pressable
         style={({ pressed }) => [
           styles.button,
           (!emailAddress || !password) && styles.buttonDisabled,
@@ -131,16 +115,18 @@ export default function Page() {
         onPress={onSignUpPress}
         disabled={!emailAddress || !password}
       >
-        <ThemedText style={styles.buttonText}>Continue</ThemedText>
+         <Text style={styles.buttonText}>Continue</Text>
       </Pressable>
       <View style={styles.linkContainer}>
-        <ThemedText>Have an account? </ThemedText>
-        <Link href="/sign-in">
-          <ThemedText type="link">Sign in</ThemedText>
-        </Link>
+        <Text>
+            Have an account?
+        </Text>
+        <Link href='/sign-in'>
+        <Text>
+            Sign in</Text></Link>
       </View>
-    </ThemedView>
-  )
+        </View>
+    )
 }
 
 const styles = StyleSheet.create({
