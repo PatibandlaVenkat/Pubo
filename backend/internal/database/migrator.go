@@ -47,7 +47,7 @@ if err != nil {
 	}
 
 if err:=m.LoadMigrations(subtree); err!=nil{
-	return fmt.Errorf("loading database migrations: %w",&err)
+	return fmt.Errorf("loading database migrations: %w",err)
 }
 from,err:=m.GetCurrentVersion(ctx)
 

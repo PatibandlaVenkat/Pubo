@@ -17,7 +17,7 @@ type Config struct{
 	Auth AuthConfig `koanf:"auth" validate:"required"`
 	Redis RedisConfig `koanf:"redis" validate:"required"`
 	Integration IntegrationConfig `koanf:"integration" validate:"required"`
-	Observabiltiy *ObservabiltiyConfig `koanf:"observablity"`
+	Observabiltiy *ObservabiltiyConfig `koanf:"observability"`
 }
 type Primary struct{
 	Env string `koanf:"env" validate:"required"`
