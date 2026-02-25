@@ -27,7 +27,7 @@ type NewRelicConfig struct{
 type HealthChecksConfig struct{
 	Enabled bool `koanf:"enabled"`
 	Interval time.Duration `koanf:"interval" validate:"min=1s"`
-	Timeout time.Duration `koanf:"timeout" validate:"required"`
+	Timeout time.Duration `koanf:"timeout" validate:"min=1s"`
 	checks []string `koanf:"checks"`
 }
 

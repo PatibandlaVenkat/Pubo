@@ -6,6 +6,7 @@ import (
 	"net/http"
 	"os"
 	"os/signal"
+	"time"
 
 	"github.com/PatibandlaVenkat/Pubo/internal/config"
 	"github.com/PatibandlaVenkat/Pubo/internal/database"
@@ -53,7 +54,7 @@ log.Fatal().Err(err).Msg("failed to start server")
 		}
 	}()
 	<-ctx.Done()
-	ctx,cancel:=context.WithTimeout(context.Background(),DefaultContextTimeout)
+	ctx,cancel:=context.WithTimeout(context.Background(),DefaultContextTimeout*time.Second)
 	 if err=srv.Shutdown(ctx); err!=nil{
 		log.Fatal().Err(err).Msg("server forced to shutdown")
 	 }
