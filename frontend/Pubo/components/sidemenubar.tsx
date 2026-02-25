@@ -2,7 +2,6 @@ import useTheme from "@/hooks/useTheme";
 import { Pressable, Text, useWindowDimensions, View } from "react-native";
 import { styles } from '../styles/SideMenu.styles'
 
-
 type SideMenuProps={
   visible: boolean;
   onClose: () => void;

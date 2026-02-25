@@ -1,7 +1,7 @@
 import React from "react";
 import { TouchableOpacity,StyleSheet,Platform } from "react-native";
 import{Ionicons} from '@expo/vector-icons'
-import { FontAwesome5 } from "@expo/vector-icons";
+import { FontAwesome6 } from "@expo/vector-icons";
 import{useSafeAreaInsets} from 'react-native-safe-area-context'
 import useTheme from "@/hooks/useTheme";
 export  default function FloatingPenButton(){
@@ -21,7 +21,7 @@ export  default function FloatingPenButton(){
             onPress={()=>alert("button pressed")}
             >
                 
-                <FontAwesome5 name="edit" size={24} color="black"/>
+                <FontAwesome6 name="add" size={30} color="black"/>
             </TouchableOpacity>
         
     );
@@ -41,9 +41,9 @@ const styles = StyleSheet.create({
     shadowOffset: { width: 0, height: 4 },
     shadowOpacity: 0.3,
     shadowRadius: 4,
-    margin:40,
-    marginRight:20,
-    marginBottom:80,
+
+    marginRight:7,
+    marginBottom:55,
     
     // Shadow for Android
     elevation: 6,

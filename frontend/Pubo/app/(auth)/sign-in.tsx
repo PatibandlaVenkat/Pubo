@@ -73,7 +73,7 @@ await setActive({
                             return
                         }
                         router.replace('/')
-                    }
+                    },
                 })
             }
             else{
@@ -102,17 +102,17 @@ if(showEmailCode){
             placeholderTextColor="#666666"
             onChangeText={(code)=>setCode(code)}
             keyboardType='numeric'/>
-            <Pressable style={({pressed})=>[styles.button,pressed && styles.buttonPressed]}>
+            <Pressable style={({ pressed })=>[styles.button,pressed && styles.buttonPressed]}
+                onPress={OnVerifyPress}
+                >
                 <Text style={styles.buttonText}>Verify</Text>
             </Pressable>
-
         </View>
     )
 }
 return(
     <View style={styles.container}>
-        <Text style={styles.title}
-        >
+        <Text style={styles.title}>
             Sign in
         </Text>
         <Text style={styles.label}>Email Address</Text>
@@ -125,6 +125,17 @@ return(
         onChangeText={(emailAddress)=>setEmailAddress(emailAddress)}
         keyboardType="email-address"
         />
+
+    <Text style={styles.label}>Password</Text>
+      <TextInput
+        style={styles.input}
+        value={password}
+        placeholder="Enter password"
+        placeholderTextColor="#666666"
+        secureTextEntry={true}
+        onChangeText={(password) => setPassword(password)}
+      />
+
         <Pressable
         style={({pressed})=>[
             styles.button,

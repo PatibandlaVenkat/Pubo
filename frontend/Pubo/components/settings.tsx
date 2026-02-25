@@ -1,6 +1,6 @@
 import useTheme from "@/hooks/useTheme";
 import { Pressable, Text, useWindowDimensions, View } from "react-native";
-
+import { styles } from "../styles/settings.styles";
 
 type SettingsProps={
   visible: boolean;
@@ -8,29 +8,33 @@ type SettingsProps={
 };
 
 export default function Settings({ visible, onClose }: SettingsProps){
+
   const {width} = useWindowDimensions();
   const {colors} = useTheme();
 
   if(!visible) return null;
 
   return(
-    <View>
-      <View>
-        <Text>Settings</Text>
+    <View style={styles.overlay}>
+      <View style={[styles.settings,{width:width*0.75,backgroundColor:colors.sidebar}]}>
+        <Text style={styles.title}>Settings</Text>
 
-        <Pressable>
+        <View style={{height:1,backgroundColor:'#fff',width:'100%'}}></View>
+
+        <Pressable style={styles.item}>
           <Text>Platforms</Text>
         </Pressable>
 
-        <Pressable>
+        <View style={styles.divider}></View>
+
+        <Pressable style={styles.item}>
           <Text>Profile</Text>
         </Pressable>
 
-        <Pressable>
-          <Text></Text>
-        </Pressable>
+        <View style={styles.divider}></View>
 
       </View>
+      <Pressable style={styles.backdrop} onPress={onClose} />
     </View>
   )
 }

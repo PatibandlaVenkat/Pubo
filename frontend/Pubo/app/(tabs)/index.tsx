@@ -4,10 +4,12 @@ import { useState } from "react";
 import { Ionicons } from "@expo/vector-icons";
 import { SafeAreaView } from "react-native-safe-area-context";
 import SideMenu from "@/components/sidemenubar";
+import Settings from "@/components/settings";
 
 export default function Index() {
       const {colors,isDarkMode} = useTheme();
       const [menuOpen, setMenuOpen] = useState(false);
+      const [settingsOpen, setSettingsOpen] = useState(false);
   return (
     <SafeAreaView
       style={{
@@ -28,7 +30,7 @@ export default function Index() {
         <Text style={{marginLeft: 8,color:"#fff",paddingRight: 10}}>All Chanels</Text>
       </Pressable>
 
-      <Pressable style={{paddingRight:25}}>
+      <Pressable onPress={() => setSettingsOpen(true)}  style={{paddingRight:25}}>
         <Ionicons name="settings-outline" size={26} color={'#fff'} />
       </Pressable>
 
