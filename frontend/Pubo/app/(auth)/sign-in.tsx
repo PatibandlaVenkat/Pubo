@@ -1,8 +1,11 @@
-import{useSignIn} from '@clerk/clerk-expo'
+import{isClerkAPIResponseError, useSignIn} from '@clerk/clerk-expo'
 import{Link,useRouter} from 'expo-router'
 import * as React from 'react'
 import type {EmailCodeFactor} from '@clerk/types'
 import { Pressable,StyleSheet,TextInput,View,Text } from 'react-native'
+import { ClerkAPIError } from '@clerk/types'
+import { ClerkAPIResponseError } from '@clerk/types'
+
 
 export default function Page(){
     const{signIn,setActive,isLoaded}=useSignIn()
@@ -11,9 +14,12 @@ export default function Page(){
     const[password,setPassword]=React.useState('')
     const[showEmailCode,setShowEmailCode]=React.useState(false)
     const[code,setCode]=React.useState('')
+    const[errorMsg,setErrorMsg]=React.useState<string|null>(null)
+   
 
     const OnSignInPress=React.useCallback(async()=>{
         if(!isLoaded){
+            setErrorMsg(null)
             return 
         }
         try{
@@ -50,7 +56,17 @@ await setActive({
             console.error(JSON.stringify(signInAttempt,null,2))
         }
         }
-        catch(err){
+        catch(err:any){
+            if(isClerkAPIResponseError(err)){
+                setErrorMsg(err.errors[0].message)
+                
+               
+            }
+            else{
+                setErrorMsg("Something went wrong . Please check your connection")
+            }
+
+
             console.error(JSON.stringify(err,null,2))
         }
     },[isLoaded,signIn,setActive,router,emailAddress,password])
@@ -77,11 +93,19 @@ await setActive({
                 })
             }
             else{
+
                 console.error(JSON.stringify(signInAttempt,null,2))
             }
 
         }
         catch(err){
+         if(isClerkAPIResponseError(err)){
+                setErrorMsg(err.errors[0].message)
+            }
+            else{
+                setErrorMsg("Something went wrong . Please check your connection")
+            }
+
             console.error(JSON.stringify(err,null,2))
         }
     },[isLoaded,signIn,setActive,router,code])
@@ -112,17 +136,29 @@ if(showEmailCode){
 }
 return(
     <View style={styles.container}>
+        {errorMsg &&(
+            <View style={styles.errorBox}>
+                <Text style={styles.errorText}>{errorMsg}</Text>
+            </View>
+        )}
         <Text style={styles.title}>
             Sign in
         </Text>
         <Text style={styles.label}>Email Address</Text>
         <TextInput 
+       
         style={styles.input}
         autoCapitalize='none'
         value={emailAddress}
         placeholder='Enter email'
         placeholderTextColor="#666666"
-        onChangeText={(emailAddress)=>setEmailAddress(emailAddress)}
+        onChangeText={(emailAddress)=>{setEmailAddress(emailAddress);
+             if(errorMsg){
+                setErrorMsg(null);
+            }
+        }
+           
+        }
         keyboardType="email-address"
         />
 
@@ -133,7 +169,11 @@ return(
         placeholder="Enter password"
         placeholderTextColor="#666666"
         secureTextEntry={true}
-        onChangeText={(password) => setPassword(password)}
+        onChangeText={(password) => {setPassword(password);
+            if(errorMsg){
+                setErrorMsg(null)
+            }
+        }}
       />
 
         <Pressable
@@ -212,4 +252,19 @@ const styles = StyleSheet.create({
     marginTop: 12,
     alignItems: 'center',
   },
+  errorBox: {
+    backgroundColor: '#FEE2E2', // Light red background
+    padding: 12,
+    borderRadius: 8,
+    borderWidth: 1,
+    borderColor: '#EF4444', // Red border
+    marginBottom: 16,
+},
+errorText: {
+    color: '#B91C1C', // Dark red text
+    fontSize: 14,
+    fontWeight: '500',
+    textAlign: 'center',
+},
+
 })

@@ -1,4 +1,4 @@
-import { useSignUp } from "@clerk/clerk-expo";
+import { isClerkAPIResponseError, useSignUp } from "@clerk/clerk-expo";
 import{Link,useRouter} from "expo-router"
 import { StyleSheet,View,Text,Pressable, TextInput } from "react-native";
 import * as React from "react"
@@ -10,10 +10,14 @@ export default function Page(){
     const[password,setPassword]=React.useState('')
     const[pendingVerification,setPendingVerification]=React.useState(false)
     const[code,setCode]=React.useState('')
+    const[errorMsg,setErrorMsg]=React.useState<string|null>(null)
+
 
     const onSignUpPress=async()=>{
         if(!isLoaded){
+             setErrorMsg(null)
             return
+           
         }
         try{
             await signUp.create({
@@ -27,11 +31,18 @@ export default function Page(){
             //to set it as true and then show the second form
         }
         catch(err){
+            if(isClerkAPIResponseError(err)){
+                setErrorMsg(err.errors[0].message)
+            }
+            else{
+                setErrorMsg("Check you Internet connection and try again")
+            }
             console.error(JSON.stringify(err,null,2))
         }
     }
     const onVerifyPress=async()=>{
         if(!isLoaded){
+             setErrorMsg(null)
             return
         }
         try{
@@ -56,12 +67,26 @@ export default function Page(){
             }
         }
         catch(err){
+             if(isClerkAPIResponseError(err)){
+                setErrorMsg(err.errors[0].message)
+            }
+            else{
+                setErrorMsg("Check you Internet connection and try again")
+            }
             console.error(JSON.stringify(err,null,2))
         }
     }
     if(pendingVerification){
         return(
+            
             <View style={styles.container}>
+                {errorMsg && (
+                    <View style={styles.errorBox}>
+                        <Text style={styles.errorText}>
+{errorMsg}
+                        </Text>
+                    </View>
+                )}
                 <Text style={styles.title}>
                     Verify your email
                 </Text>
@@ -71,7 +96,11 @@ export default function Page(){
                     value={code}
                     placeholder="Enter your verification code"
                     placeholderTextColor="#666666"
-                    onChangeText={(code)=>setCode(code)}
+                    onChangeText={(code)=>{setCode(code);
+                    if(errorMsg){
+                        setErrorMsg(null)
+                    }
+                    }}
                     keyboardType="numeric"
                    />
                    <Pressable style={({pressed})=>[styles.button,pressed && styles.buttonPressed]} onPress={onVerifyPress}>
@@ -84,6 +113,11 @@ export default function Page(){
     }
     return(
         <View style={styles.container}>
+            {errorMsg && (<View style={styles.errorBox}>
+                <Text style={styles.errorText}>
+                    {errorMsg}
+                </Text>
+            </View>)}
             <Text style={styles.title}>
                 Sign up
             </Text>
@@ -104,7 +138,11 @@ export default function Page(){
         placeholder="Enter password"
         placeholderTextColor="#666666"
         secureTextEntry={true}
-        onChangeText={(password) => setPassword(password)}
+        onChangeText={(password) => {setPassword(password)
+            if(errorMsg){
+                setErrorMsg(null)
+            }
+        }}
       />
         <Pressable
         style={({ pressed }) => [
@@ -179,4 +217,18 @@ const styles = StyleSheet.create({
     marginTop: 12,
     alignItems: 'center',
   },
+   errorBox: {
+    backgroundColor: '#FEE2E2', // Light red background
+    padding: 12,
+    borderRadius: 8,
+    borderWidth: 1,
+    borderColor: '#EF4444', // Red border
+    marginBottom: 16,
+},
+errorText: {
+    color: '#B91C1C', // Dark red text
+    fontSize: 14,
+    fontWeight: '500',
+    textAlign: 'center',
+},
 })
