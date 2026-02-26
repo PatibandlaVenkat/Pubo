@@ -5,6 +5,7 @@ import type {EmailCodeFactor} from '@clerk/types'
 import { Pressable,StyleSheet,TextInput,View,Text } from 'react-native'
 import { ClerkAPIError } from '@clerk/types'
 import { ClerkAPIResponseError } from '@clerk/types'
+import { ActivityIndicator } from 'react-native'
 
 
 export default function Page(){
@@ -15,13 +16,17 @@ export default function Page(){
     const[showEmailCode,setShowEmailCode]=React.useState(false)
     const[code,setCode]=React.useState('')
     const[errorMsg,setErrorMsg]=React.useState<string|null>(null)
+    const[loading,setLoading]=React.useState(false)
    
 
     const OnSignInPress=React.useCallback(async()=>{
+
         if(!isLoaded){
-            setErrorMsg(null)
+            
             return 
         }
+        setErrorMsg(null)
+        setLoading(true)
         try{
             const signInAttempt=await signIn.create({
                 identifier:emailAddress,
@@ -69,12 +74,16 @@ await setActive({
 
             console.error(JSON.stringify(err,null,2))
         }
+        finally{
+            setLoading(false);
+        }
     },[isLoaded,signIn,setActive,router,emailAddress,password])
 
     const OnVerifyPress=React.useCallback(async()=>{
         if(!isLoaded){
             return
         }
+
         try{
             const signInAttempt=await signIn.attemptSecondFactor({
                 strategy:'email_code',

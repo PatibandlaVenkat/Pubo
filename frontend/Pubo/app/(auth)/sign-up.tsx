@@ -15,10 +15,11 @@ export default function Page(){
 
     const onSignUpPress=async()=>{
         if(!isLoaded){
-             setErrorMsg(null)
+            
             return
            
         }
+         setErrorMsg(null)
         try{
             await signUp.create({
                 emailAddress,
@@ -42,9 +43,10 @@ export default function Page(){
     }
     const onVerifyPress=async()=>{
         if(!isLoaded){
-             setErrorMsg(null)
+            
             return
         }
+         setErrorMsg(null)
         try{
             const signUpAttempt=await signUp.attemptEmailAddressVerification({
                 code,
@@ -101,6 +103,7 @@ export default function Page(){
                         setErrorMsg(null)
                     }
                     }}
+
                     keyboardType="numeric"
                    />
                    <Pressable style={({pressed})=>[styles.button,pressed && styles.buttonPressed]} onPress={onVerifyPress}>
