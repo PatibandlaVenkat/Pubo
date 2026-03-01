@@ -3,6 +3,7 @@ import{Pressable,StyleSheet} from 'react-native'
 import{useRouter} from 'expo-router'
 import{useClerk} from '@clerk/clerk-expo'
 
+//error handling is still absent for this button but it is not necessary and it can implemented easily
 export const SignOutButton=()=>{
     const{signOut}=useClerk()
     const router=useRouter()

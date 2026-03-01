@@ -48,7 +48,9 @@ export default function RootLayout(){
       <ClerkLoaded>
         <ThemeProvider>
           <InitialLayout/>
+          <FloatingPenButton/>
         </ThemeProvider>
+
       </ClerkLoaded>
     </ClerkProvider>
   )
