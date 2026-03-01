@@ -2,6 +2,7 @@ import { isClerkAPIResponseError, useSignUp } from "@clerk/clerk-expo";
 import{Link,useRouter} from "expo-router"
 import { StyleSheet,View,Text,Pressable, TextInput } from "react-native";
 import * as React from "react"
+import{ActivityIndicator} from "react-native"
 
 export default function Page(){
     const{isLoaded,signUp,setActive}=useSignUp()
@@ -11,6 +12,7 @@ export default function Page(){
     const[pendingVerification,setPendingVerification]=React.useState(false)
     const[code,setCode]=React.useState('')
     const[errorMsg,setErrorMsg]=React.useState<string|null>(null)
+    const[loading,setLoading]=React.useState(false)
 
 
     const onSignUpPress=async()=>{
@@ -20,6 +22,7 @@ export default function Page(){
            
         }
          setErrorMsg(null)
+         setLoading(true)
         try{
             await signUp.create({
                 emailAddress,
@@ -40,6 +43,9 @@ export default function Page(){
             }
             console.error(JSON.stringify(err,null,2))
         }
+        finally{
+            setLoading(false)
+        }
     }
     const onVerifyPress=async()=>{
         if(!isLoaded){
@@ -47,6 +53,7 @@ export default function Page(){
             return
         }
          setErrorMsg(null)
+         setLoading(true)
         try{
             const signUpAttempt=await signUp.attemptEmailAddressVerification({
                 code,
@@ -77,6 +84,9 @@ export default function Page(){
             }
             console.error(JSON.stringify(err,null,2))
         }
+        finally{
+            setLoading(false)
+        }
     }
     if(pendingVerification){
         return(
@@ -106,8 +116,12 @@ export default function Page(){
 
                     keyboardType="numeric"
                    />
-                   <Pressable style={({pressed})=>[styles.button,pressed && styles.buttonPressed]} onPress={onVerifyPress}>
-                    <Text style={styles.buttonText}>Verify</Text>
+                   <Pressable style={({pressed})=>[styles.button,pressed && styles.buttonPressed]} onPress={onVerifyPress}
+                    disabled={loading}>
+                   {loading?(<ActivityIndicator color="white"/>):
+                   ( <Text style={styles.buttonText}>Verify</Text>)
+                   }
+                   
                    </Pressable>
 
                 
@@ -154,9 +168,13 @@ export default function Page(){
           pressed && styles.buttonPressed,
         ]}
         onPress={onSignUpPress}
-        disabled={!emailAddress || !password}
+        disabled={!emailAddress || !password || loading}
+       
       >
-         <Text style={styles.buttonText}>Continue</Text>
+        {loading?(<ActivityIndicator color="white"/>)
+        :
+        (<Text style={styles.buttonText}>Continue</Text>)}
+         
       </Pressable>
       <View style={styles.linkContainer}>
         <Text>

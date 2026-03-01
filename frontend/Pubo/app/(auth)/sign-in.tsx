@@ -83,6 +83,7 @@ await setActive({
         if(!isLoaded){
             return
         }
+        setLoading(true)
 
         try{
             const signInAttempt=await signIn.attemptSecondFactor({
@@ -117,6 +118,9 @@ await setActive({
 
             console.error(JSON.stringify(err,null,2))
         }
+        finally{
+            setLoading(false)
+        }
     },[isLoaded,signIn,setActive,router,code])
 
 if(showEmailCode){
@@ -137,8 +141,12 @@ if(showEmailCode){
             keyboardType='numeric'/>
             <Pressable style={({ pressed })=>[styles.button,pressed && styles.buttonPressed]}
                 onPress={OnVerifyPress}
+                disabled={loading}
                 >
-                <Text style={styles.buttonText}>Verify</Text>
+                    {loading?(<ActivityIndicator color="white"/>):
+                    (<Text style={styles.buttonText}>Verify</Text>)
+                    }
+                
             </Pressable>
         </View>
     )
@@ -192,8 +200,12 @@ return(
             pressed && styles.buttonPressed,
         ]}
         onPress={OnSignInPress}
-        disabled={!emailAddress||!password}>
-            <Text style={styles.buttonText}>Sign In</Text>
+        disabled={!emailAddress||!password||loading}>
+            {loading?(<ActivityIndicator color="white"/>)
+            :(
+                <Text style={styles.buttonText}>Sign In</Text>
+            )}
+            
 
         </Pressable>
         <View style={styles.linkContainer}>
