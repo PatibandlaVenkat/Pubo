@@ -9,7 +9,7 @@ const draft = () => {
   return (
     <SafeAreaView
       style={{
-        backgroundColor: '#0E2A47',
+        backgroundColor: colors.backGround,
         flex: 1,
       }}
     >

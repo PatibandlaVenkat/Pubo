@@ -1,7 +1,5 @@
 import { ThemeProvider } from "@/hooks/useTheme";
-import { Slot, Stack } from "expo-router";
-import { View } from "react-native";
-import FloatingPenButton from "@/components/FloatingPenButton";
+import { Slot} from "expo-router";
 import {ClerkProvider,ClerkLoaded,useAuth} from '@clerk/clerk-expo'
 import{tokenCache} from '@clerk/clerk-expo/token-cache'
 import{useRouter,useSegments} from 'expo-router'
@@ -48,7 +46,6 @@ export default function RootLayout(){
       <ClerkLoaded>
         <ThemeProvider>
           <InitialLayout/>
-          <FloatingPenButton/>
         </ThemeProvider>
 
       </ClerkLoaded>

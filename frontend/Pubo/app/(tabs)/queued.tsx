@@ -7,7 +7,9 @@ const queued = () => {
   const {colors,isDarkMode} = useTheme();
   return (
     <SafeAreaView
-     style={styles.container}
+     style={{    
+    flex:1,
+    backgroundColor: colors.backGround,}}
     >
     <View>
       <Text style={{color:colors.text}}>queued</Text>
@@ -15,10 +17,4 @@ const queued = () => {
     </SafeAreaView>
   )
 }
-const styles=StyleSheet.create({
-  container:{
-    flex:1,
-    backgroundColor: '#0E2A47',
-  }
-})
 export default queued
