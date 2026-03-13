@@ -15,29 +15,29 @@ export interface ColorScheme{
 }
 
 const lightColors: ColorScheme ={
-  primary: '#8a6cff',
+  primary: '#6366F1',
   background: '#F8FAFC',
   card: '#ffffff',
-  text: '#000000',
-  border: '#000000',
+  text: '#0F172A',
+  border: '#cdd1d8',
   notification: '#000000',
   backGround: '#ffffff',
   textMuted: '#94A3B8',
   success: '#10b981',
-  sidebar: '#94A3B8'
+  sidebar: '#94A3B8',
 }
 
 const darkColors: ColorScheme ={
   primary: '#6366F1',
-  background: '#0E2A47',
+  background: '#000000',
   card: '#0E2A47',
   text: '#ffffff',
-  border: '#8E8E93',
+  border: '#334155',
   notification: '#ffffff',
-  backGround: '#0E2A47',
+  backGround: '#0F172A',
   textMuted: '#64748B',
   success: '#34d399',
-  sidebar: '#12375e'
+  sidebar: '#12375e',
 }
 
 interface ThemeContextType{

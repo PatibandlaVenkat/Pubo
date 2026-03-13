@@ -2,11 +2,13 @@ import { AntDesign, Ionicons } from '@expo/vector-icons'
 import { FontAwesome } from '@expo/vector-icons';
 import { FontAwesome5 } from '@expo/vector-icons';
 import { Tabs } from "expo-router";
+import FloatingPenButton from '@/components/FloatingPenButton';
 import useTheme from '@/hooks/useTheme';
 
 export default function TabLayout(){
   const {colors, isDarkMode} = useTheme();
   return(
+    <>
     <Tabs
     screenOptions={{
       // headerShadowVisible: false,
@@ -46,5 +48,7 @@ export default function TabLayout(){
       }}
       />
     </Tabs>
+    <FloatingPenButton/>
+    </>
   )
 }
