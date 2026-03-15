@@ -3,8 +3,13 @@ import{Link,useRouter} from "expo-router"
 import { StyleSheet,View,Text,Pressable, TextInput } from "react-native";
 import * as React from "react"
 import{ActivityIndicator} from "react-native"
+import { createStyles } from '@/styles/signin.styles'
+import useTheme from '@/hooks/useTheme'
 
 export default function Page(){
+    const { colors, isDarkMode } = useTheme();
+    const styles = createStyles(colors, isDarkMode);
+
     const{isLoaded,signUp,setActive}=useSignUp()
     const router=useRouter()
     const[emailAddress,setEmailAddress]=React.useState('')
@@ -135,121 +140,61 @@ export default function Page(){
                     {errorMsg}
                 </Text>
             </View>)}
-            <Text style={styles.title}>
-                Sign up
+            <View style={styles.maincontainer}>
+                <Text style={styles.title}>
+                    Sign up
+                </Text>
+                <Text style={styles.label}>Email address</Text>
+                <View style={styles.inputview}>
+                    <TextInput
+                        style={styles.input}
+                        autoCapitalize="none"
+                        value={emailAddress}
+                        placeholder="Enter email"
+                        placeholderTextColor="#666666"
+                        onChangeText={(email) => setEmailAddress(email)}
+                        keyboardType="email-address"
+                    />
+                </View>
+        <Text style={styles.label}>Password</Text>
+        <View style={styles.inputview}>
+            <TextInput
+                style={styles.input}
+                value={password}
+                placeholder="Enter password"
+                placeholderTextColor="#666666"
+                secureTextEntry={true}
+                onChangeText={(password) => {setPassword(password)
+                    if(errorMsg){
+                        setErrorMsg(null)
+                    }
+                }}
+            />
+        </View>
+            <Pressable
+            style={({ pressed }) => [
+            styles.button,
+            (!emailAddress || !password) && styles.buttonDisabled,
+            pressed && styles.buttonPressed,
+            ]}
+            onPress={onSignUpPress}
+            disabled={!emailAddress || !password || loading}
+        
+        >
+            {loading?(<ActivityIndicator color="white"/>)
+            :
+            (<Text style={styles.buttonText}>Continue</Text>)}
+            
+        </Pressable>
+        <View style={styles.linkContainer}>
+            <Text style={[styles.label,{paddingTop:3}]}>
+                Have an account?
             </Text>
-            <Text style={styles.label}>Email address</Text>
-             <TextInput
-        style={styles.input}
-        autoCapitalize="none"
-        value={emailAddress}
-        placeholder="Enter email"
-        placeholderTextColor="#666666"
-        onChangeText={(email) => setEmailAddress(email)}
-        keyboardType="email-address"
-      />
-       <Text style={styles.label}>Password</Text>
-      <TextInput
-        style={styles.input}
-        value={password}
-        placeholder="Enter password"
-        placeholderTextColor="#666666"
-        secureTextEntry={true}
-        onChangeText={(password) => {setPassword(password)
-            if(errorMsg){
-                setErrorMsg(null)
-            }
-        }}
-      />
-        <Pressable
-        style={({ pressed }) => [
-          styles.button,
-          (!emailAddress || !password) && styles.buttonDisabled,
-          pressed && styles.buttonPressed,
-        ]}
-        onPress={onSignUpPress}
-        disabled={!emailAddress || !password || loading}
-       
-      >
-        {loading?(<ActivityIndicator color="white"/>)
-        :
-        (<Text style={styles.buttonText}>Continue</Text>)}
-         
-      </Pressable>
-      <View style={styles.linkContainer}>
-        <Text>
-            Have an account?
-        </Text>
-        <Link href='/sign-in'>
-        <Text>
-            Sign in</Text></Link>
-      </View>
+            <Link href='/sign-in'>
+            <Text style={[styles.label,{color:'#6366F1'}]}>
+                Sign in</Text></Link>
+        </View>
+            </View>
         </View>
     )
 }
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    padding: 20,
-    gap: 12,
-  },
-  title: {
-    marginBottom: 8,
-  },
-  description: {
-    fontSize: 14,
-    marginBottom: 16,
-    opacity: 0.8,
-  },
-  label: {
-    fontWeight: '600',
-    fontSize: 14,
-  },
-  input: {
-    borderWidth: 1,
-    borderColor: '#ccc',
-    borderRadius: 8,
-    padding: 12,
-    fontSize: 16,
-    backgroundColor: '#fff',
-  },
-  button: {
-    backgroundColor: '#0a7ea4',
-    paddingVertical: 12,
-    paddingHorizontal: 24,
-    borderRadius: 8,
-    alignItems: 'center',
-    marginTop: 8,
-  },
-  buttonPressed: {
-    opacity: 0.7,
-  },
-  buttonDisabled: {
-    opacity: 0.5,
-  },
-  buttonText: {
-    color: '#fff',
-    fontWeight: '600',
-  },
-  linkContainer: {
-    flexDirection: 'row',
-    gap: 4,
-    marginTop: 12,
-    alignItems: 'center',
-  },
-   errorBox: {
-    backgroundColor: '#FEE2E2', // Light red background
-    padding: 12,
-    borderRadius: 8,
-    borderWidth: 1,
-    borderColor: '#EF4444', // Red border
-    marginBottom: 16,
-},
-errorText: {
-    color: '#B91C1C', // Dark red text
-    fontSize: 14,
-    fontWeight: '500',
-    textAlign: 'center',
-},
-})
