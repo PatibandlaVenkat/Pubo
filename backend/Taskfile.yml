@@ -1,4 +1,5 @@
 version: '3'
+dotenv: ['.env']
 
 vars:
   PUBO_DB_DSN: '{{.PUBO_DB_DSN | default ""}}'
@@ -39,7 +40,7 @@ tasks:
 
   migrations:up:
     desc: apply all up database migrations
-    deps: [ confirm ]
+    # deps: [ confirm ]
     cmds:
     - echo 'Running up migrations...'
     - tern migrate -m ./internal/database/migrations --conn-string {{.PUBO_DB_DSN}}
