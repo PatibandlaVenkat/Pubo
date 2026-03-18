@@ -1,113 +1,194 @@
-import React, { useMemo } from "react"
-import { View, StyleSheet } from "react-native"
+import React, { memo } from "react";
+import { Pressable, ScrollView, StyleProp, Text, TextStyle, View, ViewStyle } from "react-native";
+import { format, Locale } from "date-fns";
+import { HeatMapActionsProps } from "@/types/heatmap";
 
-/* -----------------------------
-   Types
-------------------------------*/
+type Cell = {
+  date: Date;
+  label: string | number;
+  x: number;
+  y: number;
+  count: number;
+};
 
-type DayData = {
-  date: string
-  count: number
-}
+type HorizontalHeatMapProps = {
+  rt1: boolean;
+  pressable: boolean;
+  hoverable: boolean;
+  scrollEnabled: boolean;
+  showsHorizontalScrollIndicator: boolean;
+  width: number;
+  height: number;
+  cells: Cell[];
+  cellGap: number;
+  isCellTextVisible: boolean;
+  cellDefaultColor: string;
+  cellSize: number;
+  cellRadius: number;
+  cellTextColor: string;
+  cellTextFontSize: number;
+  isHeaderVisible: boolean;
+  headerLabels: { date: Date; width: number }[];
+  headerTextAlign?: TextStyle["textAlign"];
+  headerTextFormat: string;
+  headerTextFontSize: number;
+  headerBottomSpace: number;
+  headerTextColor: string;
+  locale?: Locale;
+  scrollStyle?: StyleProp<ViewStyle>;
+  isSidebarVisible: boolean;
+  sidebarLabels: { label: string; value: string | number }[];
+  sidebarTextColor: string;
+  sideBarTextFontSize: number;
+  getCellColor: (count: number) => string | undefined;
+  onCellPress: HeatMapActionsProps["onCellPress"];
+  onMouseEnter: HeatMapActionsProps["onMouseEnter"];
+  onMouseLeave: HeatMapActionsProps["onMouseLeave"];
+};
 
-type WeekData = (DayData | null)[]
+export const HorizontalHeatMap = memo(
+  ({
+    rt1,
+    pressable,
+    hoverable,
+    scrollEnabled,
+    showsHorizontalScrollIndicator,
+    width,
+    height,
+    cells,
+    isCellTextVisible,
+    cellGap,
+    cellDefaultColor,
+    cellSize,
+    cellRadius,
+    cellTextColor,
+    cellTextFontSize,
+    isHeaderVisible,
+    headerLabels,
+    locale,
+    headerTextAlign,
+    headerTextFormat,
+    headerTextFontSize,
+    headerBottomSpace,
+    headerTextColor,
+    getCellColor,
+    scrollStyle,
+    isSidebarVisible,
+    sidebarLabels,
+    sidebarTextColor,
+    sideBarTextFontSize,
+    onCellPress,
+    onMouseEnter,
+    onMouseLeave,
+  }: HorizontalHeatMapProps) => {
+    // Groups cells by row (y) so we can render a matrix
+    const rows = Array.from(new Set(cells.map((c) => c.y)))
+      .sort((a, b) => a - b)
+      .map((y) => ({
+        y,
+        items: cells.filter((c) => c.y === y).sort((a, b) => a.x - b.x),
+      }));
 
-/* -----------------------------
-   Helpers
-------------------------------*/
+    return (
+      <ScrollView
+        horizontal
+        scrollEnabled={scrollEnabled}
+        showsHorizontalScrollIndicator={showsHorizontalScrollIndicator}
+        style={scrollStyle}
+        contentContainerStyle={{ width, minHeight: height }}
+      >
+        <View style={{ flexDirection: rt1 ? "row-reverse" : "row" }}>
+          {isSidebarVisible && (
+            <View style={{ marginRight: cellGap, marginTop: isHeaderVisible ? headerTextFontSize + headerBottomSpace : 0 }}>
+              {sidebarLabels.map((s) => (
+                <View
+                  key={String(s.value)}
+                  style={{ height: cellSize + cellGap, justifyContent: "center", alignItems: "flex-end" }}
+                >
+                  <Text style={{ color: sidebarTextColor, fontSize: sideBarTextFontSize }}>
+                    {s.label}
+                  </Text>
+                </View>
+              ))}
+            </View>
+          )}
 
-function generateLast30Days(): DayData[] {
-  const days: DayData[] = []
-  const today = new Date()
+          <View>
+            {isHeaderVisible && (
+              <View style={{ flexDirection: "row", marginBottom: headerBottomSpace }}>
+                {headerLabels.map((h, idx) => (
+                  <View key={idx} style={{ width: h.width }}>
+                    <Text
+                      style={{
+                        color: headerTextColor,
+                        fontSize: headerTextFontSize,
+                        textAlign: headerTextAlign ?? "left",
+                      }}
+                    >
+                      {format(h.date, headerTextFormat, { locale })}
+                    </Text>
+                  </View>
+                ))}
+              </View>
+            )}
 
-  for (let i = 29; i >= 0; i--) {
-    const d = new Date()
-    d.setDate(today.getDate() - i)
+            <View style={{ gap: cellGap }}>
+              {rows.map((row) => (
+                <View key={row.y} style={{ flexDirection: "row", gap: cellGap }}>
+                  {row.items.map((cell) => {
+                    const bg = getCellColor(cell.count) ?? cellDefaultColor;
+                    const commonStyle: ViewStyle = {
+                      width: cellSize,
+                      height: cellSize,
+                      borderRadius: cellRadius,
+                      backgroundColor: bg,
+                      alignItems: "center",
+                      justifyContent: "center",
+                    };
 
-    days.push({
-      date: d.toISOString().split("T")[0],
-      count: Math.floor(Math.random() * 5),
-    })
-  }
+                    const label = isCellTextVisible ? String(cell.label) : "";
 
-  return days
-}
+                    if (pressable) {
+                      return (
+                        <Pressable
+                          key={cell.date.toISOString() + "-" + cell.x + "-" + cell.y}
+                          style={commonStyle}
+                          onPress={() => onCellPress?.({ date: cell.date, count: cell.count })}
+                          onHoverIn={(e) =>
+                            hoverable &&
+                            onMouseEnter?.({
+                              date: cell.date,
+                              count: cell.count,
+                              x: e.nativeEvent.locationX,
+                              y: e.nativeEvent.locationY,
+                            })
+                          }
+                          onHoverOut={() => hoverable && onMouseLeave?.()}
+                        >
+                          {isCellTextVisible && (
+                            <Text style={{ color: cellTextColor, fontSize: cellTextFontSize }}>{label}</Text>
+                          )}
+                        </Pressable>
+                      );
+                    }
 
-function groupIntoWeeks(data: DayData[]): WeekData[] {
-  const weeks: WeekData[] = []
-  let currentWeek: WeekData = new Array(7).fill(null)
-
-  data.forEach((item) => {
-    const dayIndex = new Date(item.date).getDay()
-    currentWeek[dayIndex] = item
-
-    if (dayIndex === 6) {
-      weeks.push(currentWeek)
-      currentWeek = new Array(7).fill(null)
-    }
-  })
-
-  if (currentWeek.some((day) => day !== null)) {
-    weeks.push(currentWeek)
-  }
-
-  return weeks
-}
-
-function getColor(count: number): string {
-  if (!count) return "#1f2937"
-  if (count === 1) return "#0e4429"
-  if (count === 2) return "#006d32"
-  if (count === 3) return "#26a641"
-  return "#39d353"
-}
-
-/* -----------------------------
-   Component
-------------------------------*/
-
-export default function HeatmapMonth() {
-  const data = useMemo<DayData[]>(() => generateLast30Days(), [])
-  const weeks = useMemo<WeekData[]>(() => groupIntoWeeks(data), [data])
-
-  return (
-    <View style={styles.container}>
-      {weeks.map((week, weekIndex) => (
-        <View key={weekIndex} style={styles.weekColumn}>
-          {week.map((day, dayIndex) => (
-            <View
-              key={dayIndex}
-              style={[
-                styles.daySquare,
-                {
-                  backgroundColor: day
-                    ? getColor(day.count)
-                    : "#111827",
-                },
-              ]}
-            />
-          ))}
+                    return (
+                      <View
+                        key={cell.date.toISOString() + "-" + cell.x + "-" + cell.y}
+                        style={commonStyle}
+                      >
+                        {isCellTextVisible && (
+                          <Text style={{ color: cellTextColor, fontSize: cellTextFontSize }}>{label}</Text>
+                        )}
+                      </View>
+                    );
+                  })}
+                </View>
+              ))}
+            </View>
+          </View>
         </View>
-      ))}
-    </View>
-  )
-}
-
-/* -----------------------------
-   Styles
-------------------------------*/
-
-const styles = StyleSheet.create({
-  container: {
-    flexDirection: "row",
-  },
-  weekColumn: {
-    marginRight: 4,
-  },
-  daySquare: {
-    width: 14,
-    height: 14,
-    marginBottom: 4,
-    borderRadius: 3,
-  },
-})
+      </ScrollView>
+    );
+  }
+);
