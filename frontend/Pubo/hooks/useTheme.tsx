@@ -3,7 +3,7 @@ import { useColorScheme } from "react-native";
 
 export interface ColorScheme{
   primary: string;
-  background: string;
+  authbackground: string;
   card: string;
   text: string;
   border: string;
@@ -12,11 +12,12 @@ export interface ColorScheme{
   textMuted: string;
   success: string;
   sidebar: string;
+  authmaincont: string;
 }
 
 const lightColors: ColorScheme ={
   primary: '#6366F1',
-  background: '#F8FAFC',
+  authbackground: '#F8FAFC',
   card: '#ffffff',
   text: '#0F172A',
   border: '#cdd1d8',
@@ -25,11 +26,12 @@ const lightColors: ColorScheme ={
   textMuted: '#94A3B8',
   success: '#10b981',
   sidebar: '#94A3B8',
+  authmaincont:'#F1F5F9',
 }
 
 const darkColors: ColorScheme ={
   primary: '#6366F1',
-  background: '#000000',
+  authbackground:'#0F172A',
   card: '#0E2A47',
   text: '#ffffff',
   border: '#334155',
@@ -38,6 +40,7 @@ const darkColors: ColorScheme ={
   textMuted: '#64748B',
   success: '#34d399',
   sidebar: '#12375e',
+  authmaincont:'#1E293B',
 }
 
 interface ThemeContextType{
