@@ -8,11 +8,14 @@ import (
 type Services struct{
 	Auth *AuthService
 	Job *job.JobService
+	Quotes *QuoteService
 }
 func NewServices(s *server.Server,repos *repository.Repositories)(*Services,error){
 	authService:=NewAuthService(s)
+	QuoteService:=NewQuoteService(s)
 	return &Services{
 		Job:s.Job,
 		Auth: authService,
+		Quotes: QuoteService,
 	},nil
 }

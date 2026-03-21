@@ -5,6 +5,7 @@ import (
 
 	"github.com/PatibandlaVenkat/Pubo/internal/handler"
 	"github.com/PatibandlaVenkat/Pubo/internal/middleware"
+	v1 "github.com/PatibandlaVenkat/Pubo/internal/router/v1"
 	"github.com/PatibandlaVenkat/Pubo/internal/server"
 	"github.com/PatibandlaVenkat/Pubo/internal/service"
 	"github.com/labstack/echo/v4"
@@ -39,6 +40,7 @@ DenyHandler: func(c echo.Context,identifier string, err error) error{
 		middlewares.Global.Recover(),
 	)
 	registerSystemRoutes(router,h)
-	router.Group("/api/v1")
+	apiV1:=router.Group("/api/v1")
+	v1.RegisterV1Routes(apiV1,h,middlewares)
 	return router
 }
