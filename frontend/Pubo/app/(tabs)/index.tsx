@@ -7,6 +7,7 @@ import { SafeAreaView } from "react-native-safe-area-context";
 import SideMenu from "@/components/sidemenubar";
 import Settings from "@/components/settings";
 import HeatMap from "@/components/HeatMap";
+import QuoteContainer from "@/components/QuoteContainer";
 
 export default function Index() {
   const { colors } = useTheme();
@@ -57,6 +58,9 @@ export default function Index() {
           hoverable
         />
       </View>
+      <View>
+        <QuoteContainer/>
+      </View>
       <SideMenu visible={menuOpen} onClose={() => setMenuOpen(false)} />
       <Settings visible={settingsOpen} onClose={() => setSettingsOpen(false)} />
     </SafeAreaView>
@@ -88,8 +92,12 @@ const styles = StyleSheet.create({
     fontSize: 14,
   },
   heatmapContainer: {
-    flex: 1,
+    flex: 0.5,
     paddingHorizontal: 12,
-    paddingTop: 40,
+    paddingTop: 45,
   },
+  QuoteContainer:{
+    paddingVertical:8,
+    paddingHorizontal:12,
+  }
 });

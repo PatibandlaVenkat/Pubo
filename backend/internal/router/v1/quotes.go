@@ -9,6 +9,6 @@ import (
 func registerQuoteRoutes(r *echo.Group, h *handler.QuoteHandler) {
 	quotes := r.Group("/quotes")
 	quotes.GET("", h.GetQuote)
-	quotes.POST("/refresh", h.RefreshQuotes)
+	quotes.GET("/refresh", h.RefreshQuotes)
 }
 
