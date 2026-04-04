@@ -1,6 +1,7 @@
 import useTheme from "@/hooks/useTheme";
 import { Pressable, Text, useWindowDimensions, View } from "react-native";
 import { styles } from "../styles/settings.styles";
+import { SignOutButton } from "@/app/(auth)/sign-out-button";
 
 type SettingsProps={
   visible: boolean;
@@ -30,6 +31,7 @@ export default function Settings({ visible, onClose }: SettingsProps){
         <Pressable style={styles.item}>
           <Text>Profile</Text>
         </Pressable>
+        <SignOutButton/>
 
         <View style={styles.divider}></View>
 
