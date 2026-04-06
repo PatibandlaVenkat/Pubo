@@ -36,6 +36,7 @@ func main() {
 	}
 	srv,err:=server.New(cfg,&log,loggerService)
 	if err!=nil{
+		
 		log.Fatal().Err(err).Msg("failed to intialise server")
 	}
 

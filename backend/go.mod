@@ -9,6 +9,8 @@ require (
 
 require (
 	dario.cat/mergo v1.0.1 // indirect
+	github.com/Azure/azure-sdk-for-go/sdk/azcore v1.20.0 // indirect
+	github.com/Azure/azure-sdk-for-go/sdk/internal v1.11.2 // indirect
 	github.com/Masterminds/goutils v1.1.1 // indirect
 	github.com/Masterminds/semver/v3 v3.3.0 // indirect
 	github.com/Masterminds/sprig/v3 v3.3.0 // indirect
@@ -46,6 +48,7 @@ require (
 )
 
 require (
+	github.com/Azure/azure-sdk-for-go/sdk/storage/azblob v1.6.4
 	github.com/clerk/clerk-sdk-go/v2 v2.5.1
 	github.com/go-viper/mapstructure/v2 v2.4.0 // indirect
 	github.com/hibiken/asynq v0.26.0

@@ -15,7 +15,6 @@ END $$;
 CREATE TABLE IF NOT EXISTS posts(
     id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
     author_user_id UUID NOT NULL REFERENCES pubo_users(id) ON DELETE CASCADE,
-    title TEXT,
     content TEXT NOT NULL,
     status post_status NOT NULL DEFAULT 'draft',
     scheduled_at TIMESTAMP,
