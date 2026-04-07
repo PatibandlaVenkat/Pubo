@@ -13,7 +13,7 @@ type QuoteHandler struct {
 	Handler
 	QuoteService *service.QuoteService
 }
-type EmptyRequest struct{}
+type EmptyRequest struct{}//as there is no payload we pass and to maintain the pattern we use and empty struct as payloa
 func(r EmptyRequest) Validate() error{
 	return nil
 }
