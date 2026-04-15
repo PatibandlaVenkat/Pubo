@@ -1,9 +1,13 @@
 package media
 
-import "time"
+import (
+	"time"
+
+	"github.com/google/uuid"
+)
 
 type Asset struct {
-	ID            string
+	ID            uuid.UUID
 	OwnerUserID   string
 	OriginalName  string
 	BlobName      string

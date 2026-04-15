@@ -56,9 +56,9 @@ if contentType ==""{
 }
 blobName:=BuildBlobName(folder,fileHeader.Filename)
  _,err=a.client.UploadStream(ctx,a.containerName,blobName,bytes.NewReader(data),&azblob.UploadStreamOptions{
-	HTTPHeaders: &azblob.BlobHTTPHeaders{
-		BlobContenType:&contentType,
-	},
+	// HTTPHeaders: &azblob.BlobHTTPHeaders{
+	// 	BlobContentType:&contentType,
+	// },
 
  })
  if err!=nil{
@@ -80,10 +80,10 @@ func(a*AzureBlobClient) DeleteBlob(ctx context.Context,blobName string) error{
 	return err
 }
 func BuildBlobName(folder,fileName string) string{
-	folder:=strings.Trim(folder,"/")
+	folder=strings.Trim(folder,"/")
 	ext:=filepath.Ext(fileName)
 	base:=strings.TrimSuffix(fileName,ext)
-	base:=strings.ReplaceAll(base," ","_")
+	base=strings.ReplaceAll(base," ","_")
 	ts:=time.Now().UTC().Format("20060102150405")
 
 	   if folder == "" {

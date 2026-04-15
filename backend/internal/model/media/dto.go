@@ -26,7 +26,7 @@ type UploadMediaResponse struct{
 
 }
 type MediaListResponse struct{
-	Items[]UploadMediaResponse `json:"items"`
+	Items []UploadMediaResponse `json:"items"`
 }
 type EmptyRequest struct{}
 func(EmptyRequest) Validate() error{return nil}

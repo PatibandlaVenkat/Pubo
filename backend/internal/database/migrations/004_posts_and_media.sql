@@ -26,17 +26,23 @@ CREATE TABLE IF NOT EXISTS posts(
 
 CREATE TABLE IF NOT EXISTS post_media(
     id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+    owner_user_id TEXT,
     post_id UUID NOT NULL REFERENCES posts(id) ON DELETE CASCADE,
-    media_type TEXT NOT NULL CHECK (media_type IN ('image','video','gif','file')),
+    original_name TEXT NOT NULL,
+    blob_name TEXT NOT NULL,
     storage_url TEXT NOT NULL,
-    mime_type TEXT,
-    file_size_bytes BIGINT,
+    container_name TEXT NOT NULL,
+    content_type TEXT NOT NULL,
+    size_bytes BIGINT,
+    etag TEXT,
     width INT,
     height INT,
     duration_seconds NUMERIC(10,3),
     position INT NOT NULL DEFAULT 0,
     created_at TIMESTAMP NOT NULL DEFAULT NOW()
+    updated_at TIMESTAMP NOT NULL DEFAULT NOW()
 );
+id,owner_user_id,original_name,blob_name,storage_url,container_name,content_type,size_bytes,etag,created_at,updated_at
 
 CREATE INDEX IF NOT EXISTS idx_posts_author_user_id ON posts(author_user_id);
 CREATE INDEX IF NOT EXISTS idx_posts_status_scheduled_at ON posts(status,scheduled_at);

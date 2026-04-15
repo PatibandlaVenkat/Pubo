@@ -18,9 +18,15 @@ type Config struct{
 	Redis RedisConfig `koanf:"redis" validate:"required"`
 	Integration IntegrationConfig `koanf:"integration" validate:"required"`
 	Observabiltiy *ObservabiltiyConfig `koanf:"observability"`
+	Azure         AzureConfig         `koanf:"azure" validate:"required"`
 }
 type Primary struct{
 	Env string `koanf:"env" validate:"required"`
+}
+type AzureConfig  struct{
+	ConnectionString string `koanf:"connection_string" validate:"required"`
+    AccountName      string `koanf:"account_name" validate:"required"`
+    ContainerName    string `koanf:"container_name" validate:"required"`
 }
 type ServerConfig struct{
 	Port string `koanf:"port" validate:"required"`

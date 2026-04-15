@@ -2,6 +2,7 @@ package handler
 
 import (
 	"net/http"
+	"strconv"
 
 	"github.com/PatibandlaVenkat/Pubo/internal/middleware"
 	"github.com/PatibandlaVenkat/Pubo/internal/model/media"
@@ -10,28 +11,74 @@ import (
 	"github.com/labstack/echo/v4"
 )
 
-type MediaHandler struct {
+type MediaHandler struct{
 	Handler
-	MediaService *service.MediaService
+	service service.MediaService
 }
-func NewMediaHandler(s *server.Server,MediaService service.MediaService)(*MediaHandler){
+func NewMediaHandler(s *server.Server,MediaService *service.MediaService) *MediaHandler{
 	return &MediaHandler{
-		Handler: NewHandler(s),
-		MediaService: &MediaService,
+		Handler:NewHandler(s),
+		service: *MediaService,
 	}
 }
-func(h *MediaHandler) Upload(c echo.Context) error{
+func(h *MediaHandler) Upload( c echo.Context) (error){
 	return Handle(
 		h.Handler,
-		func(c echo.Context,req EmptyRequest)(*media.Asset,error){
+		func(c echo.Context, payload *media.UploadMediaPayload)(*media.Asset,error) {
 			userID:=middleware.GetUserID(c)
-			fileHeader,err:=c.FormFile("file")
-			folder:=c.FormValue("folder")
-			return h.MediaService.Upload(c.Request().Context(),userID,fileHeader,folder)
-			
-
+			fileheader,_:=c.FormFile("file")
+			return h.service.Upload(c,userID,fileheader,payload.Folder)
 		},
 		http.StatusCreated,
-		&EmptyRequest{}
+		&media.UploadMediaPayload{},
 	)(c)
 }
+func(h *MediaHandler) Get(c echo.Context) error{
+	return Handle(
+		h.Handler,
+		func(c echo.Context, payload *EmptyRequest)(*media.Asset,error){
+			id:=c.Param("id")
+			return h.service.Get(c,id)
+		},
+		http.StatusOK,
+		&EmptyRequest{},
+	)(c)
+}
+func(h *MediaHandler) List(c echo.Context) error{
+	return Handle(
+		h.Handler,
+		func(c echo.Context,payload *EmptyRequest)([]media.Asset,error){
+			userID:=middleware.GetUserID(c)
+			limit:=20
+			offset:=0
+			if v := c.QueryParam("limit"); v != "" {
+        if n, err := strconv.Atoi(v); err == nil && n > 0 {
+            limit = n
+        }
+    }
+    if v := c.QueryParam("offset"); v != "" {
+        if n, err := strconv.Atoi(v); err == nil && n >= 0 {
+            offset = n
+        }
+    }
+	return h.service.List(c,userID,limit,offset)
+		},
+		http.StatusOK,
+		&EmptyRequest{},
+
+	)(c)
+}
+
+// func(h*MediaHandler) Delete(c echo.Context) error{
+// 	return Handle(
+// 		h.Handler,
+// 		func(c echo.Context,payload *EmptyRequest)error{
+// 			id:=c.Param("id")
+// 			return h.service.Delete(c,id)
+// 		},
+// 		http.StatusNoContent,
+// 		&EmptyRequest{},
+// 	)(c)
+// }
+
+
