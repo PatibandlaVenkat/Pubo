@@ -32,7 +32,7 @@ IF NOT EXISTS(
     WHERE conname='chk_post_attempts_attempt_no_positive'
 )THEN 
 ALTER TABLE post_attempts
-ADD CONSTRAINT chk_post_attempts_no_positive
+ADD CONSTRAINT  chk_post_attempt_no_positive
 CHECK(attempt_no>0);
 END IF;
 END $$;
@@ -46,7 +46,7 @@ IF NOT EXISTS(
 )
 THEN 
 ALTER TABLE connected_accounts
-ADD CONSTRAINT chk_connected_accounts_tokens
+ADD CONSTRAINT  chk_connected_accounts_tokens
 CHECk(
     is_active=FALSE
     OR access_token_encrypted IS NOT NULL

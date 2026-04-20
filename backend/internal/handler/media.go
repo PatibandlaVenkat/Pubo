@@ -25,7 +25,7 @@ func(h *MediaHandler) Upload( c echo.Context) (error){
 	return Handle(
 		h.Handler,
 		func(c echo.Context, payload *media.UploadMediaPayload)(*media.Asset,error) {
-			userID:=middleware.GetUserID(c)
+			userID:="1254656a-8967-40fd-b7aa-97cebfe765a4"
 			fileheader,_:=c.FormFile("file")
 			return h.service.Upload(c,userID,fileheader,payload.Folder)
 		},

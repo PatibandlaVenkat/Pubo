@@ -86,7 +86,7 @@ func(s*MediaService) List(ctx echo.Context,ownerUserID string,limit int ,offset 
 	 }
 	 return asset,nil
 	
-}
+} 
 func(s*MediaService) Delete(ctx echo.Context,id string) error{
 	logger:=middleware.GetLogger(ctx)
 	asset,err:=s.MediaRepo.GetByID(ctx.Request().Context(),id)

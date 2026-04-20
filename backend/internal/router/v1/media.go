@@ -7,7 +7,7 @@ import (
 )
 func registerMediaRoutes(r *echo.Group,h *handler.MediaHandler,auth *middleware.AuthMiddleware){
 	media:=r.Group("/media")
-	media.Use(auth.RequireAuth)
+	// media.Use(auth.RequireAuth)
 	media.POST("/upload",h.Upload)
 	media.GET("",h.List)
 	media.GET("/:id",h.Get)

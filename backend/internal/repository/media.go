@@ -28,13 +28,15 @@ func(r*MediaRepository) Create(ctx context.Context,asset media.Asset) error{
 	VALUES (
 	@id,
 	@owner_user_id,
-	@original_name
-	@blob_name
-	@storage_url
-	@container_name
-	@content_type
+	@original_name,
+	@blob_name,
+	@storage_url,
+	@container_name,
+	@content_type,
 	@size_bytes,
-	@etag
+	@etag,
+	NOW(),
+	NOW()
 	)
 	
 	`
@@ -53,7 +55,7 @@ func(r*MediaRepository) Create(ctx context.Context,asset media.Asset) error{
 	
 }
 func(r*MediaRepository) GetByID(ctx context.Context,id string)(*media.Asset,error){
-	stmt:=`SELECT id,owner_user_id,original_name,blob_name,storage_url,container_name,content_type,size_bytes,etage,created_at,updated_at FROM post_media
+	stmt:=`SELECT id,owner_user_id,original_name,blob_name,storage_url,container_name,content_type,size_bytes,etag,created_at,updated_at FROM post_media
 	WHERE id=@id`
 	rows,err:=r.server.DB.Pool.Query(ctx,stmt,pgx.NamedArgs{
 		"id":id,
