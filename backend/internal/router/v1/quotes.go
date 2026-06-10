@@ -10,7 +10,7 @@ import (
 
 func registerQuoteRoutes(r *echo.Group, h *handler.QuoteHandler,auth *middleware.AuthMiddleware) {
 	quotes := r.Group("/quotes")
-	// quotes.Use(auth.RequireAuth)
+	quotes.Use(auth.RequireAuth)
 	quotes.GET("", h.GetQuote)
 	quotes.GET("/refresh", h.RefreshQuotes)
 }

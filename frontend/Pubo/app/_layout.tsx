@@ -5,7 +5,11 @@ import{tokenCache} from '@clerk/clerk-expo/token-cache'
 import{useRouter,useSegments} from 'expo-router'
 import { useEffect } from "react";
 function InitialLayout(){
-  const{isLoaded,isSignedIn}=useAuth()
+  const{isLoaded,isSignedIn,getToken}=useAuth()
+  const getSessionToken=async()=>{
+    const token=await getToken();
+    console.log(token);
+  }
   const router=useRouter()
   const segments=useSegments()
   useEffect(()=>{

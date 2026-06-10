@@ -53,7 +53,7 @@ func main() {
 		if err=srv.Start(); err!=nil && !errors.Is(err,http.ErrServerClosed){
 log.Fatal().Err(err).Msg("failed to start server")
 		}
-	}()
+	}() 
 	<-ctx.Done()
 	ctx,cancel:=context.WithTimeout(context.Background(),DefaultContextTimeout*time.Second)
 	 if err=srv.Shutdown(ctx); err!=nil{

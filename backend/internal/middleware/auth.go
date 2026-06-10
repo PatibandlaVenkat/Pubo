@@ -22,6 +22,7 @@ func NewAuthMiddleWare(s * server.Server) *AuthMiddleware{
 	}
 }
 func (auth *AuthMiddleware) RequireAuth(next echo.HandlerFunc) echo.HandlerFunc {
+	
 	return echo.WrapMiddleware(
 		clerkhttp.WithHeaderAuthorization(
 			clerkhttp.AuthorizationFailureHandler(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
@@ -44,7 +45,9 @@ func (auth *AuthMiddleware) RequireAuth(next echo.HandlerFunc) echo.HandlerFunc 
 					auth.server.Logger.Error().Str("function", "RequireAuth").Dur("duration", time.Since(start)).Msg(
 						"could not get session claims from context")
 				}
-			}))))(func(c echo.Context) error {
+			}))))(func(c echo.Context) error { 
+				auth.server.Logger.Info().Str("authorisation",c.Request().Header.Get("Authorization")).Msg("Incoming auth header")
+
 		start := time.Now()
 		claims, ok := clerk.SessionClaimsFromContext(c.Request().Context())
 
