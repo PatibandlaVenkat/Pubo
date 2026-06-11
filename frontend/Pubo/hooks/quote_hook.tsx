@@ -13,7 +13,8 @@ export const useRotationQuote=()=>{
     const[error,setError]=useState<string|null>(null);
     const callCount=useRef(0)
     const fetchQuote=async()=>{
-    const token=await getToken({template:"pubo_backend"})
+    const token=await getToken()
+    // console.log(token);
         if(!BASE_URL){
             setError("EXPO_PUBLIC_BACKEND_URL is missing")
             setIsLoading(false)
@@ -23,7 +24,11 @@ export const useRotationQuote=()=>{
             setError(null)
            
             if(callCount.current%5==0){
-                await fetch(`${BASE_URL}/quotes/refresh`);
+                await fetch(`${BASE_URL}/quotes/refresh`,{
+                    headers:{
+                   Authorization: `Bearer ${token}`,
+                }
+                });
             }
             const res=await fetch(`${BASE_URL}/quotes`,{
                 headers:{

@@ -25,8 +25,10 @@ func (auth *AuthMiddleware) RequireAuth(next echo.HandlerFunc) echo.HandlerFunc 
 	
 	return echo.WrapMiddleware(
 		clerkhttp.WithHeaderAuthorization(
+
 			clerkhttp.AuthorizationFailureHandler(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 				start := time.Now()
+				auth.server.Logger.Error().Str("auth_header",r.Header.Get("Authorization")).Msg("clerk auth failed")
 
 				w.Header().Set("Content-Type", "application/json")
 				w.WriteHeader(http.StatusUnauthorized)
@@ -46,16 +48,16 @@ func (auth *AuthMiddleware) RequireAuth(next echo.HandlerFunc) echo.HandlerFunc 
 						"could not get session claims from context")
 				}
 			}))))(func(c echo.Context) error { 
-				auth.server.Logger.Info().Str("authorisation",c.Request().Header.Get("Authorization")).Msg("Incoming auth header")
+				// auth.server.Logger.Info().Str("authorisation",c.Request().Header.Get("Authorization")).Msg("Incoming auth header")
 
 		start := time.Now()
 		claims, ok := clerk.SessionClaimsFromContext(c.Request().Context())
 
 		if !ok {
 			auth.server.Logger.Error().
-				Str("function", "RequireAuth").
+				Str("function", "RequireAuth"). 
 				Str("request_id", GetRequestID(c)).
-				Dur("duration", time.Since(start)).
+				Dur("duration", time.Since(start)). 
 				Msg("could not get session claims from context")
 			return errs.NewUnauthorizedError("Unauthorized", false)
 		}
@@ -65,7 +67,7 @@ func (auth *AuthMiddleware) RequireAuth(next echo.HandlerFunc) echo.HandlerFunc 
 		c.Set("permissions", claims.Claims.ActiveOrganizationPermissions)
 
 		auth.server.Logger.Info().
-			Str("function", "RequireAuth").
+			Str("function", "RequireAuth"). 
 			Str("user_id", claims.Subject).
 			Str("request_id", GetRequestID(c)).
 			Dur("duration", time.Since(start)).
