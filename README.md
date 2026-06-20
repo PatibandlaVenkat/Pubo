@@ -357,17 +357,12 @@ cp .env.example .env
 ```
 
 Configure:
-
-```env
-DATABASE_URL=
-JWT_SECRET=
-PORT=
-```
+environment variables by going through sample .env file
 
 ### Start Backend
 
 ```bash
-go run cmd/main.go
+go run cmd/main.go or task run
 ```
 
 ### Start Mobile Application
