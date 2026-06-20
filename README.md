@@ -1,5 +1,4 @@
-#  PUBO
-
+# PUBO
 
 PUBO is a cross-platform mobile application built around the philosophy of **Building in Public**. It enables creators, developers, founders, and professionals to compose content once and publish it across multiple social platforms from a single interface.
 
@@ -12,8 +11,8 @@ The goal is simple:
 ## 📱 Application Screenshots
 
 <p align="center">
-  <img src="./assets/home-feed.png" width="250"/>
-  <img src="./assets/post-composer.png" width="250"/>
+  <img src="https://raw.githubusercontent.com/prashanth30-n/Pubo/master/Screenshot%202026-06-20%20164207.png" width="250"/>
+  <img src="https://raw.githubusercontent.com/prashanth30-n/Pubo/master/pubo_1.jpeg" width="250"/>
 </p>
 
 ## 🏛️ System Architecture
@@ -75,8 +74,6 @@ This flow ensures every request is validated, traced, rate-limited, and processe
 ---
 
 ## 📂 Backend Folder Structure
-
-![Backend Folder Structure](./assets/backend-folder-structure.png)
 
 ```text
 backend/
@@ -309,6 +306,7 @@ Example:
 POST /api/v1/posts
 
 GET /api/v1/posts
+```
 
 ---
 
