@@ -14,7 +14,7 @@ export const useRotationQuote=()=>{
     const callCount=useRef(0)
     const fetchQuote=async()=>{
     const token=await getToken()
-    // console.log(token);
+  
         if(!BASE_URL){
             setError("EXPO_PUBLIC_BACKEND_URL is missing")
             setIsLoading(false)
