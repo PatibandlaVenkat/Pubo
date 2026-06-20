@@ -11,15 +11,10 @@ The goal is simple:
 
 ## 📱 Application Screenshots
 
-| Home Feed | Post Composer |
-|-----------|--------------|
-| ![Home Feed](./assets/home-feed.png) | ![Post Composer](./assets/post-composer.png) |
-
-| Platform Selection | Published Posts |
-|-------------------|-----------------|
-| ![Platform Selection](./assets/platform-selection.png) | ![Published Posts](./assets/published-posts.png) |
-
----
+<p align="center">
+  <img src="./assets/home-feed.png" width="250"/>
+  <img src="./assets/post-composer.png" width="250"/>
+</p>
 
 ## 🏛️ System Architecture
 
