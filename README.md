@@ -1,6 +1,5 @@
-# 🚀 PUBO
+#  PUBO
 
-> **Build Once. Publish Everywhere.**
 
 PUBO is a cross-platform mobile application built around the philosophy of **Building in Public**. It enables creators, developers, founders, and professionals to compose content once and publish it across multiple social platforms from a single interface.
 
@@ -316,26 +315,6 @@ POST /api/v1/posts
 
 GET /api/v1/posts
 
-POST /api/v1/auth/login
-
-POST /api/v1/auth/register
-```
-
----
-
-## 🧪 Testing
-
-The architecture is designed with testability as a first-class concern.
-
-Testing support includes:
-
-- Unit Testing
-- Service Testing
-- Repository Testing
-- Integration Testing
-
-Dependency injection and interface-based design allow components to be tested in isolation.
-
 ---
 
 ## 🛠️ Tech Stack
@@ -401,8 +380,8 @@ go run cmd/main.go
 ### Start Mobile Application
 
 ```bash
-npm install
-npm start
+cd frontend/pubo/
+npx expo start
 ```
 
 ---
@@ -419,19 +398,6 @@ Whether you're:
 - A creator publishing updates
 
 PUBO helps you write once and publish everywhere.
-
----
-
-## ⭐ Engineering Highlights
-
-- Clean Layered Architecture
-- Dependency Injection
-- Middleware-Based Request Processing
-- Structured Error Handling
-- Scalable Backend Design
-- Testable Components
-- Separation of Concerns
-- Production-Oriented Project Structure
 
 ---
 
