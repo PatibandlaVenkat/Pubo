@@ -19,7 +19,7 @@ CREATE TABLE IF NOT EXISTS connected_accounts(
     user_id UUID NOT NULL REFERENCES pubo_users(id) on DELETE CASCADE,
     platform_id SMALLINT NOT NULL REFERENCES platforms(id),
     platform_account_id TEXT NOT NULL,
-    handle TEXT,
+    handle TEXT, 
     display_name TEXT,
     avatar_url TEXT,
     access_token_encrypted TEXT,
