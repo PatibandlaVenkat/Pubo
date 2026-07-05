@@ -1,0 +1,44 @@
+package repository
+
+import (
+	"Context"
+	"fmt"
+
+	"github.com/PatibandlaVenkat/Pubo/internal/model/signup"
+	"github.com/PatibandlaVenkat/Pubo/internal/server"
+	"github.com/jackc/pgx/v5"
+)
+type SignupRepository struct{
+	server *server.Server
+}
+func NewSignupRepository(server *server.Server)(*SignupRepository){
+	return &SignupRepository{
+		server: server,
+	}
+}
+func(r*SignupRepository) SignUp(ctx context.Context,payload *signup.SignUpPayload) (*signup.SignUp,error){
+	stmt:=`INSERT INTO
+	pubo_users(
+	clerk_user_id,
+	email,
+	) VALUES(
+	 @clerk_user_id,
+	 @email)
+	 RETURNING
+	 *
+	 `
+	 rows,err:=r.server.DB.Pool.Query(ctx,stmt,pgx.NamedArgs{
+		"clerk_user_id":payload.ClerkUserId,
+		"email":payload.Email,
+	 })
+	 if err!=nil{
+		return nil,fmt.Errorf("failed to execute signup query: %w",err)
+
+	 }
+	 SignupItem,err:=pgx.CollectOneRow(rows,pgx.RowToStructByName[signup.SignUp])
+	 if err!=nil{
+		return nil,fmt.Errorf("failed to collect rows from database:%w",err)
+	 }
+	 return &SignupItem,nil
+
+}

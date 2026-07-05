@@ -10,6 +10,8 @@ type Handlers struct{
 	OpenAPI *OpenAPIHandler
 	Quotes *QuoteHandler
 	Media *MediaHandler
+	Bluesky *BlueskyHandler
+	Signup *SignUpHandler
 }
 func NewHandlers(s*server.Server,services *service.Services) *Handlers{
 	return &Handlers{
@@ -17,5 +19,8 @@ func NewHandlers(s*server.Server,services *service.Services) *Handlers{
 		OpenAPI:NewOpenAPIHanlder(s),
 		Quotes: NewQuoteHandler(s,services.Quotes),
 		Media: NewMediaHandler(s,services.MediaService),
+		Bluesky: NewBlueskyHandler(s,services.BlueskyService),
+		Signup: NewSignUpHandler(s,services.SignUpService),
+
 	}
 }

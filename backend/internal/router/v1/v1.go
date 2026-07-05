@@ -9,4 +9,5 @@ import (
 func RegisterV1Routes(router *echo.Group, handlers *handler.Handlers,middlewares * middleware.MiddleWares){
 	registerQuoteRoutes(router,handlers.Quotes,middlewares.Auth)
 	registerMediaRoutes(router,handlers.Media,middlewares.Auth)
+	registerBlueskyRoutes(router,handlers.Bluesky,middlewares.Auth)
 }

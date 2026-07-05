@@ -11,10 +11,14 @@ type Services struct{
 	Job *job.JobService
 	Quotes *QuoteService
 	MediaService *MediaService
+	BlueskyService *BlueskyService
+	SignUpService *SignUpService
 }
 func NewServices(s *server.Server,repos *repository.Repositories)(*Services,error){
 	authService:=NewAuthService(s)
 	QuoteService:=NewQuoteService(s)
+	BlueskyService:=NewBlueskyService(s,repos.Bluesky)
+	SignUpService:=NewSignUpService(s,repos.Signup)
 	blobClient,err:=storage.NewAzureBlobClient(s.Config)
 	if err!=nil{
 		return nil,err
@@ -25,5 +29,7 @@ func NewServices(s *server.Server,repos *repository.Repositories)(*Services,erro
 		Auth: authService,
 		Quotes: QuoteService,
 		MediaService: mediaService,
+		BlueskyService: BlueskyService,
+		SignUpService: SignUpService,
 	},nil
 }
