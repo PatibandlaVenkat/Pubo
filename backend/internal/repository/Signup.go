@@ -1,7 +1,7 @@
 package repository
 
 import (
-	"Context"
+	"context"
 	"fmt"
 
 	"github.com/PatibandlaVenkat/Pubo/internal/model/signup"
@@ -16,19 +16,20 @@ func NewSignupRepository(server *server.Server)(*SignupRepository){
 		server: server,
 	}
 }
-func(r*SignupRepository) SignUp(ctx context.Context,payload *signup.SignUpPayload) (*signup.SignUp,error){
+func(r*SignupRepository) SignUp(ctx context.Context,payload *signup.SignUpPayload,userID string) (*signup.SignUp,error){
 	stmt:=`INSERT INTO
 	pubo_users(
 	clerk_user_id,
-	email,
+	email
 	) VALUES(
 	 @clerk_user_id,
-	 @email)
+	 @email
+	 )
 	 RETURNING
 	 *
 	 `
 	 rows,err:=r.server.DB.Pool.Query(ctx,stmt,pgx.NamedArgs{
-		"clerk_user_id":payload.ClerkUserId,
+		"clerk_user_id":userID,
 		"email":payload.Email,
 	 })
 	 if err!=nil{

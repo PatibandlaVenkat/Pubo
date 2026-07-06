@@ -3,6 +3,7 @@ package handler
 import (
 	"net/http"
 
+	"github.com/PatibandlaVenkat/Pubo/internal/middleware"
 	"github.com/PatibandlaVenkat/Pubo/internal/model/signup"
 	"github.com/PatibandlaVenkat/Pubo/internal/server"
 	"github.com/PatibandlaVenkat/Pubo/internal/service"
@@ -18,11 +19,12 @@ func NewSignUpHandler(s *server.Server,SignUpService *service.SignUpService)(*Si
 		SignUpService: SignUpService,
 	}
 }
-func(h*SignUpHandler) SignUp(c echo.Context,payload *signup.SignUpPayload)error{
+func(h*SignUpHandler) SignUp(c echo.Context)error{
 	return Handle(
 		h.Handler,
 		func(c echo.Context,payload *signup.SignUpPayload) (*signup.SignUp,error){
-			return h.SignUpService.SignUp(c,payload)
+			userId:=middleware.GetUserID(c)
+			return h.SignUpService.SignUp(c,payload,userId)
 		},
 		http.StatusOK,
 		&signup.SignUpPayload{},

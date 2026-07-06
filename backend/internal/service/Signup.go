@@ -17,9 +17,9 @@ func NewSignUpService(server *server.Server,SignupRepo *repository.SignupReposit
 		SignUpRepo: SignupRepo,
 	}
 }
-func(s *SignUpService) SignUp(ctx echo.Context,payload *signup.SignUpPayload)(*signup.SignUp,error){
+func(s *SignUpService) SignUp(ctx echo.Context,payload *signup.SignUpPayload,userID string)(*signup.SignUp,error){
 	logger:=middleware.GetLogger(ctx)
-	SignUpItem,err:=s.SignUpRepo.SignUp(ctx.Request().Context(),payload)
+	SignUpItem,err:=s.SignUpRepo.SignUp(ctx.Request().Context(),payload,userID)
 	if err!=nil{
 		logger.Error().Err(err).Msg("failed to signup")
 		return nil,err

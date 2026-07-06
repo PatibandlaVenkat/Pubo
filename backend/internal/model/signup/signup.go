@@ -7,6 +7,7 @@ type SignUp struct{
 	ClerkUserId *string `json:"userID" db:"clerk_user_id"`
 	Email *string`json:"email" db:"email"`
 	DisplayName string`json:"displayName" db:"display_name"`
+	AvatarUrl string `json:"avatarUrl" db:"avatar_url"`
 	
 }
 
