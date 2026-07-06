@@ -5,8 +5,13 @@ import * as React from "react"
 import{ActivityIndicator} from "react-native"
 import { createStyles } from '@/styles/signin.styles'
 import useTheme from '@/hooks/useTheme'
+import { useAuth } from "@clerk/clerk-expo";
+import{useEffect,useState,useRef} from "react"
+const BASE_URL=process.env.EXPO_PUBLIC_BACKEND_URL;
+
 
 export default function Page(){
+     const{getToken}=useAuth()
     const { colors, isDarkMode } = useTheme();
     const styles = createStyles(colors, isDarkMode);
 
@@ -18,7 +23,30 @@ export default function Page(){
     const[code,setCode]=React.useState('')
     const[errorMsg,setErrorMsg]=React.useState<string|null>(null)
     const[loading,setLoading]=React.useState(false)
+const SignUpDB=async()=>{
+    if(!BASE_URL){
+        return;
+    }
+    try{
+        const token=await getToken();
+        const res=await fetch(`${BASE_URL}/signup`,{
+            method:'POST',
+            headers:{
+                 'Authorization': `Bearer ${token}`,
+                'Content-Type': 'application/json',
+            },
+            body:JSON.stringify({
+                "email":emailAddress
 
+            })
+        
+        })
+    }
+    catch(err){
+        console.error(JSON.stringify(err,null,2))
+    }
+   
+}
 
     const onSignUpPress=async()=>{
         if(!isLoaded){
@@ -72,6 +100,9 @@ export default function Page(){
                             console.log(session?.currentTask)
                             return
                         }
+                       await SignUpDB();
+                        
+                        
                         router.replace('/')
                     },
                 })
