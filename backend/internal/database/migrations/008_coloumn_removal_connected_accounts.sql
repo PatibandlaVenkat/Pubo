@@ -1,0 +1,3 @@
+ALTER TABLE connected_accounts DROP CONSTRAINT connected_accounts_user_id_platform_id_platform_account_id_key;
+ALTER TABLE connected_accounts DROP COLUMN platform_account_id;
+ALTER TABLE connected_accounts ADD CONSTRAINT connected_accounts_user_platform_unique UNIQUE(user_id,platform_id);

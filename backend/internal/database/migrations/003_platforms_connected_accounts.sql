@@ -16,9 +16,9 @@ ON CONFLICT (code) DO NOTHING;
 
 CREATE TABLE IF NOT EXISTS connected_accounts(
     id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
-    user_id UUID NOT NULL REFERENCES pubo_users(id) on DELETE CASCADE,
+    user_id UUID NOT NULL REFERENCES pubo_users(clerk_user_id) on DELETE CASCADE,
     platform_id SMALLINT NOT NULL REFERENCES platforms(id),
-    platform_account_id TEXT NOT NULL,
+    -- platform_account_id TEXT NOT NULL this has been removed through another migration,
     handle TEXT, 
     display_name TEXT,
     avatar_url TEXT,

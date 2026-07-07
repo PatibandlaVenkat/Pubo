@@ -11,5 +11,4 @@ type SignUpPayload struct {
 func (s *SignUpPayload) Validate() error {
 	validate := validator.New()
 	return validate.Struct(s)
-	
 }
