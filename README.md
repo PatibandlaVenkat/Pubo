@@ -11,7 +11,7 @@ The goal is simple:
 ## 📱 Application Screenshots
 
 <p align="center">
-  <img src="<img width="593" height="653" alt="Screenshot 2026-06-20 164207" src="https://github.com/user-attachments/assets/c2f3aa54-736f-4ca3-82d1-b89dc1b34487" />
+  <img src="https://raw.githubusercontent.com/prashanth30-n/Pubo/master/pubo_2.jpeg" width="250"/>
   <img src="https://raw.githubusercontent.com/prashanth30-n/Pubo/master/pubo_1.jpeg" width="250"/>
 </p>
 
