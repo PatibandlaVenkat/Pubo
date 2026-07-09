@@ -11,6 +11,7 @@ BEGIN
      );
      END IF;
 END$$;
+--delete cascade meaning if the referencing row got deleted then this row will get deleted
 
 CREATE TABLE IF NOT EXISTS post_targets(
     id UUID PRIMARY KEY DEFAULT gen_random_uuid(),

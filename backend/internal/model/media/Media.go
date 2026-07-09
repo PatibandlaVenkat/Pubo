@@ -2,11 +2,13 @@ package media
 
 import (
 	"time"
+	 "github.com/PatibandlaVenkat/Pubo/internal/model"
 
 	"github.com/google/uuid"
 )
 
 type Asset struct {
+	model.Base
 	ID            uuid.UUID
 	OwnerUserID   string
 	OriginalName  string
