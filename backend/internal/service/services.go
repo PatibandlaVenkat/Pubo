@@ -13,12 +13,14 @@ type Services struct{
 	MediaService *MediaService
 	BlueskyService *BlueskyService
 	SignUpService *SignUpService
+	LinkedinService *LinkedinService
 }
 func NewServices(s *server.Server,repos *repository.Repositories)(*Services,error){
 	authService:=NewAuthService(s)
 	QuoteService:=NewQuoteService(s)
 	BlueskyService:=NewBlueskyService(s,repos.Bluesky)
 	SignUpService:=NewSignUpService(s,repos.Signup)
+	LinkedinService:=NewLinkedinService(s,repos.Linkedin)
 	blobClient,err:=storage.NewAzureBlobClient(s.Config)
 	if err!=nil{
 		return nil,err
@@ -31,5 +33,6 @@ func NewServices(s *server.Server,repos *repository.Repositories)(*Services,erro
 		MediaService: mediaService,
 		BlueskyService: BlueskyService,
 		SignUpService: SignUpService,
+		LinkedinService: LinkedinService,
 	},nil
 }
