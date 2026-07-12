@@ -327,10 +327,7 @@ GET /api/v1/posts
 
 - PostgreSQL
 
-### DevOps
 
-- Docker
-- GitHub Actions
 
 ### Architecture
 
