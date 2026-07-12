@@ -12,6 +12,7 @@ type Handlers struct{
 	Media *MediaHandler
 	Bluesky *BlueskyHandler
 	Signup *SignUpHandler
+	Linkedin *LinkedinHandler
 }
 func NewHandlers(s*server.Server,services *service.Services) *Handlers{
 	return &Handlers{
@@ -21,6 +22,7 @@ func NewHandlers(s*server.Server,services *service.Services) *Handlers{
 		Media: NewMediaHandler(s,services.MediaService),
 		Bluesky: NewBlueskyHandler(s,services.BlueskyService),
 		Signup: NewSignUpHandler(s,services.SignUpService),
+		Linkedin:NewLinkedinHandler(s,services.LinkedinService),
 
 	}
 }

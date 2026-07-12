@@ -10,5 +10,6 @@ func RegisterV1Routes(router *echo.Group, handlers *handler.Handlers,middlewares
 	registerQuoteRoutes(router,handlers.Quotes,middlewares.Auth)
 	registerMediaRoutes(router,handlers.Media,middlewares.Auth)
 	registerBlueskyRoutes(router,handlers.Bluesky,middlewares.Auth)
-	resiterSignUpRoute(router,handlers.Signup,middlewares.Auth)
+	registerSignUpRoute(router,handlers.Signup,middlewares.Auth)
+	RegisterLinkedinRoutes(router,handlers.Linkedin,middlewares.Auth)
 }

@@ -7,7 +7,7 @@ import (
 	
 )
 
-func resiterSignUpRoute(r*echo.Group,h *handler.SignUpHandler,auth *middleware.AuthMiddleware){
+func registerSignUpRoute(r*echo.Group,h *handler.SignUpHandler,auth *middleware.AuthMiddleware){
 	signup:=r.Group("/signup")
 	signup.Use(auth.RequireAuth)
 	signup.POST("",h.SignUp)
