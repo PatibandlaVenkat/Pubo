@@ -24,7 +24,7 @@ func(r*LinkedinRepository) ConnectLinkedinAccount(ctx context.Context,userId str
 	   display_name
 	) VALUES(
 	 @user_id,
-	 platform_id,
+	 @platform_id,
 	 @access_token_encrypted,
 	 @display_name)
 	 RETURNING *`

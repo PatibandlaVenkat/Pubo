@@ -10,7 +10,7 @@ type LinkedInConnectedAccount struct {
 	DisplayName *string `json:"DisplayName" db:"display_name"`
 	AvatarUrl string
 	AcessToken *string `json:"Password" db:"access_token_encrypted"`
-	refershToken string 
+	refershToken string  `json:"refershToken" db:"refersh_token_encrypted"`
 	token_expires_at string
 	scopes string
 	is_activated string
