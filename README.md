@@ -11,8 +11,9 @@ The goal is simple:
 ## 📱 Application Screenshots
 
 <p align="center">
-  <img src="https://raw.githubusercontent.com/prashanth30-n/Pubo/master/pubo_2.jpeg" width="250"/>
-  <img src="https://raw.githubusercontent.com/prashanth30-n/Pubo/master/pubo_1.jpeg" width="250"/>
+  <img src="https://raw.githubusercontent.com/prashanth30-n/Pubo/master/frontend/pubo/pubo_2.jpeg" width="250"/>
+  <img src="https://raw.githubusercontent.com/prashanth30-n/Pubo/master/frontend/pubo/pubo_1.jpeg" width="250"/>
+  <img src="https://raw.githubusercontent.com/prashanth30-n/Pubo/master/frontend/pubo/pubo_3.jpeg" width="250"/>
 </p>
 
 ## 🏛️ System Architecture
