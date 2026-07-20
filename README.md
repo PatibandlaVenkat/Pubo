@@ -380,7 +380,7 @@ Whether you're:
 - A student showcasing projects
 - A creator publishing updates
 
-PUBO helps you write once and publish everywhere.
+PUBO helps you to maintain your Building in Public journey Consistent and Effortless
 
 ---
 
