@@ -13,7 +13,7 @@ import { HeatMapControllerProps } from "@/types/heatmap";
          hoverable,
          rt1,
          isHeaderVisible,
-         isCellTextVisible:true,
+         isCellTextVisible:false,
          isSidebarVisible,
 
     }

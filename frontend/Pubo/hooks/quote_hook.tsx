@@ -6,6 +6,17 @@ type Quote={
     text:string;
     author:string;
 }
+
+const FALLBACK_QUOTES: Quote[] = [
+    { text: "Great things are done by a series of small things brought together.", author: "Vincent van Gogh" },
+    { text: "The secret of getting ahead is getting started.", author: "Mark Twain" },
+    { text: "It always seems impossible until it is done.", author: "Nelson Mandela" },
+];
+
+function fallbackQuote(index: number): Quote {
+    return FALLBACK_QUOTES[index % FALLBACK_QUOTES.length];
+}
+
 export const useRotationQuote=()=>{
     const{getToken}=useAuth()
     const[quote,setQuote]=useState<Quote|null>(null);
@@ -13,35 +24,37 @@ export const useRotationQuote=()=>{
     const[error,setError]=useState<string|null>(null);
     const callCount=useRef(0)
     const fetchQuote=async()=>{
-    const token=await getToken()
-  
-        if(!BASE_URL){
-            setError("EXPO_PUBLIC_BACKEND_URL is missing")
-            setIsLoading(false)
-            return;
-        }
         try{
+            if(!BASE_URL){
+                throw new Error("EXPO_PUBLIC_BACKEND_URL is missing");
+            }
+
+            const token=await getToken()
             setError(null)
            
-            if(callCount.current%5==0){
-                await fetch(`${BASE_URL}/quotes/refresh`,{
-                    headers:{
-                   Authorization: `Bearer ${token}`,
-                }
-                });
-            }
             const res=await fetch(`${BASE_URL}/quotes`,{
                 headers:{
                    Authorization: `Bearer ${token}`,
                 }
-            });//fetch sends the recieve object which is internally a text over http even the backend sends a json response so we parse the res object to json type for the use 
-            const data=(await res.json()) as Quote //derserilisation like changing the backends response to typescript type quote 
+            });
+            if(!res.ok){
+                throw new Error(`Quote request failed (${res.status})`);
+            }
+
+            const data=(await res.json()) as Quote
+            if(!data?.text || !data?.author){
+                throw new Error("Quote response is invalid");
+            }
             setQuote(data);
              callCount.current+=1;
         }
         catch(e){
             const msg=e instanceof Error? e.message:"Unknown quote fetch error"
-            setError(msg)
+            console.warn("Could not fetch quote; using a local fallback.",msg)
+            setQuote(fallbackQuote(callCount.current));
+            callCount.current+=1;
+            // A fallback quote is displayed instead of an error message.
+            setError(null)
         }
         finally{
             setIsLoading(false)

@@ -3,14 +3,16 @@ import { HeatMapThemeProps } from "@/types/heatmap";
 
 const lightDefaults = {
   headerTextColor: "#57606a",
-  cellDefaultColor: "#ebedf0",
+  // Keep even zero-activity days green instead of white/grey.
+  cellDefaultColor: "#d1fae5",
   cellTextColor: "#24292f",
   sidebarTextColor: "#57606a",
   cellColor: {
-    1: "#9be9a8",
-    2: "#40c463",
-    3: "#30a14e",
-    4: "#216e39",
+    1: "#a7f3d0",
+    2: "#6ee7b7",
+    3: "#34d399",
+    4: "#059669",
+    5: "#065f46",
   } as Record<number, string>,
 };
 

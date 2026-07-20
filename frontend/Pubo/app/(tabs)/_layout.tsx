@@ -41,12 +41,7 @@ export default function TabLayout(){
         tabBarIcon:({ color,focused }) => <FontAwesome5 name="paper-plane" size={focused ? 27 : 23} color={color}/>
       }}
       />
-      <Tabs.Screen name="queued"
-      options={{
-        title:'Queued',
-        tabBarIcon:({ color,focused }) => <Ionicons name="list" size={focused ? 29 : 25} color={color}/>
-      }}
-      />
+      <Tabs.Screen name="queued" options={{ href: null }} />
     </Tabs>
     <FloatingPenButton/>
     </>

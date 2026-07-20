@@ -67,13 +67,6 @@ export default function Index() {
           <Ionicons name="menu" size={29} color={colors.primary} />
         </Pressable>
 
-        <Pressable style={[styles.channelPill, { borderColor: colors.border }]}>
-          <Ionicons name="grid-outline" size={24} color={colors.primary} />
-          <Text style={[styles.channelText, { color: colors.text }]}>
-            All Channels
-          </Text>
-        </Pressable>
-
         <Pressable onPress={() => setSettingsOpen(true)}>
           <Ionicons name="settings-outline" size={26} color={colors.primary} />
         </Pressable>
@@ -121,18 +114,6 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     justifyContent: "space-between",
     alignItems: "center",
-  },
-  channelPill: {
-    flexDirection: "row",
-    alignItems: "center",
-    borderWidth: 0.85,
-    borderRadius: 22,
-    paddingVertical: 5,
-    paddingHorizontal: 10,
-    gap: 8,
-  },
-  channelText: {
-    fontSize: 14,
   },
   heatmapContainer: {
     flex: 0.5,

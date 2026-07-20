@@ -1,4 +1,5 @@
 import useTheme from "@/hooks/useTheme";
+import { useRouter } from "expo-router";
 import { Pressable, Text, useWindowDimensions, View } from "react-native";
 import { styles } from "../styles/settings.styles";
 import { SignOutButton } from "@/app/(auth)/sign-out-button";
@@ -12,6 +13,7 @@ export default function Settings({ visible, onClose }: SettingsProps){
 
   const {width} = useWindowDimensions();
   const {colors} = useTheme();
+  const router = useRouter();
 
   if(!visible) return null;
 
@@ -22,7 +24,13 @@ export default function Settings({ visible, onClose }: SettingsProps){
 
         <View style={{height:1,backgroundColor:'#fff',width:'100%'}}></View>
 
-        <Pressable style={styles.item}>
+        <Pressable
+          style={styles.item}
+          onPress={() => {
+            onClose();
+            router.push("/connect-applications" as never);
+          }}
+        >
           <Text>Platforms</Text>
         </Pressable>
 
