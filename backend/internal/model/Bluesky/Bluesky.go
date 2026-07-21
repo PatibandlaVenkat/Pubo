@@ -16,3 +16,9 @@ type ConnectedAccounts struct {
 	is_active        string
 	last_synced_at   string
 }
+type BlueskySessionResponse struct{
+	AccessJwt string `json:"acessJwt"`
+	RefreshJwt string `json:"refreshJwt`
+	Handle string `json:"handle"`
+	DID string `json:"did"`
+}

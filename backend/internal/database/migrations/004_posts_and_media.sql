@@ -22,6 +22,7 @@ CREATE TABLE IF NOT EXISTS posts(
     failure_reason TEXT,
     created_at TIMESTAMP NOT NULL DEFAULT NOW(),
     updated_at TIMESTAMP NOT NULL DEFAULT NOW()
+    
 );
 
 CREATE TABLE IF NOT EXISTS post_media(
